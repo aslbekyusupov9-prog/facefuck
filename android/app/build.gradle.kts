@@ -1,14 +1,14 @@
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
-    namespace = "com.aifacerating"
+    namespace = "com.aifacerating.app"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.aifacerating"
+        applicationId = "com.aifacerating.app"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -35,16 +35,21 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    sourceSets {
+        getByName("main") {
+            assets {
+                srcDirs("src/main/assets")
+            }
+        }
+    }
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.13.1")
-    implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation("com.google.android.material:material:1.12.0")
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
 
-    // MediaPipe Tasks Vision (Google Official Android SDK for 478 3D Landmarks)
-    implementation("com.google.mediapipe:tasks-vision:0.10.14")
-
-    // OpenCV Android SDK (For Laplacian Variance Skin Analysis)
-    implementation("org.opencv:opencv-android:4.9.0")
+    // Capacitor Android Runtime
+    implementation("com.capacitorjs:android:6.2.0")
 }
