@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "AI_Face_Rating"
+rootProject.name = "AIFaceRating"
 include(":app")
