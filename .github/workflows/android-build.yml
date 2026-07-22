@@ -45,16 +45,11 @@ jobs:
         run: |
           mkdir -p android/app/src/main/assets/public
           cp -r dist/. android/app/src/main/assets/public/
-          # Delete KTS files to avoid conflict
+          # Ensure old KTS files are deleted
           rm -f android/settings.gradle.kts android/build.gradle.kts android/app/build.gradle.kts
 
       - name: Make gradlew executable
         run: chmod +x android/gradlew
-
-      - name: Show Gradle and Java versions
-        run: |
-          java -version
-          cd android && ./gradlew --version
 
       - name: Build Debug APK
         env:
@@ -62,14 +57,18 @@ jobs:
           ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
         run: |
           cd android
-          ./gradlew assembleDebug --no-daemon --stacktrace
-
-      - name: List build outputs
-        if: always()
-        run: find android -name "*.apk" 2>/dev/null || echo "No APK found"
+          ./gradlew assembleDebug --no-daemon --stacktrace > build_output.log 2>&1
+          EXIT_CODE=$?
+          if [ $EXIT_CODE -ne 0 ]; then
+            echo "::error::Gradle build failed! Displaying full log below:"
+            cat build_output.log
+            exit $EXIT_CODE
+          else
+            echo "Build successful!"
+            cat build_output.log | tail -n 50
+          fi
 
       - name: Upload APK
-        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: AI-Face-Rating-APK
