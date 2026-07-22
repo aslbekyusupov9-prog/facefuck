@@ -1,0 +1,95 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background: #0d0403;
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
+    color: #ffffff;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Highly Transparent Crystal Liquid Glass Cards */
+.liquid-glass {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.15), 0 8px 32px 0 rgba(0, 0, 0, 0.35);
+}
+
+.liquid-glass-accent {
+  background: linear-gradient(135deg, rgba(230, 57, 70, 0.18) 0%, rgba(127, 29, 29, 0.28) 100%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(230, 57, 70, 0.35);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 10px 30px rgba(127, 29, 29, 0.3);
+}
+
+.liquid-glass-gold {
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.12) 0%, rgba(180, 130, 20, 0.2) 100%);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  box-shadow: inset 0 1px 1px 0 rgba(244, 196, 48, 0.25), 0 8px 25px rgba(212, 175, 55, 0.15);
+}
+
+/* Animations */
+@keyframes radarScan {
+  0% {
+    top: 0%;
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0.8;
+  }
+}
+
+.animate-radar {
+  animation: radarScan 2.5s ease-in-out infinite alternate;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(230, 57, 70, 0.3), 0 0 30px rgba(212, 175, 55, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 35px rgba(230, 57, 70, 0.6), 0 0 50px rgba(212, 175, 55, 0.35);
+  }
+}
+
+.pulse-avatar {
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+@keyframes dragonFloat {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-8px) scale(1.02);
+  }
+}
+
+.animate-dragon-float {
+  animation: dragonFloat 8s ease-in-out infinite;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(230, 57, 70, 0.4);
+  border-radius: 4px;
+}
