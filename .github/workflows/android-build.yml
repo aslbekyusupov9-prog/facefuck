@@ -57,13 +57,21 @@ jobs:
           ./gradlew assembleDebug --no-daemon --stacktrace > build_output.log 2>&1 || true
           
           if [ ! -f "app/build/outputs/apk/debug/app-debug.apk" ]; then
-            echo "::error::Gradle fail! Error Log:"
-            tail -n 30 build_output.log | while read line; do echo "::error::$line"; done
-            cat build_output.log
+            echo "::error::Gradle build failed!"
+            # Asosiy xatoni topamiz
+            grep -A 20 "What went wrong:" build_output.log | while read line; do echo "::error::$line"; done
             exit 1
           fi
 
+      - name: Upload Build Log if Failed
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gradle-error-log
+          path: android/build_output.log
+
       - name: Upload APK
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: AI-Face-Rating-APK
