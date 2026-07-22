@@ -48,18 +48,26 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x android/gradlew
 
-      - name: Build APK
+      - name: Build APK (save log)
         env:
           ANDROID_HOME: /usr/local/lib/android/sdk
         run: |
           cd android
-          ./gradlew assembleDebug --stacktrace --no-daemon
-
-      - name: Find APK file
-        run: find android -name "*.apk" -type f
+          ./gradlew assembleDebug --stacktrace --no-daemon > /tmp/gradle-build.log 2>&1
+          BUILD_EXIT=$?
+          cat /tmp/gradle-build.log
+          exit $BUILD_EXIT
 
       - name: Upload APK
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: AI-Face-Rating-APK
           path: android/app/build/outputs/apk/debug/app-debug.apk
+
+      - name: Upload build log on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gradle-build-log
+          path: /tmp/gradle-build.log
