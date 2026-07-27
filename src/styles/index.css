@@ -8,8 +8,15 @@
     min-height: 100vh;
     font-family: 'Inter', sans-serif;
     color: #ffffff;
+    
+    /* Native App Feel Properties */
     user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
     -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    overscroll-behavior-y: none;
   }
 }
 
