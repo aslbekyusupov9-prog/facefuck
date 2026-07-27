@@ -7,35 +7,19 @@ export default function MobileShell({ children, activeTab, setActiveTab, user, c
   const t = (key) => getTranslation(currentLang, key);
 
   return (
-    <div className="relative min-h-screen w-full flex items-center justify-center p-0 sm:p-4 md:p-6 z-10">
-      {/* Outer Phone Mockup Frame for Desktop / Container for Mobile */}
-      <div className="relative w-full max-w-md h-[100vh] sm:h-[880px] bg-[#0d0403] sm:rounded-[54px] sm:border-[8px] sm:border-white/15 shadow-2xl overflow-hidden flex flex-col backdrop-blur-2xl">
+    <div className="relative min-h-screen w-full flex items-center justify-center z-10 bg-[#0d0403]">
+      <div className="relative w-full h-full min-h-screen bg-[#0d0403] overflow-hidden flex flex-col">
         
-        {/* Dragon Emblem Background inside Phone Frame */}
+        {/* Dragon Emblem Background inside Full Screen */}
         <DragonBackground />
         
-        {/* Top Status Bar Mock */}
-        <div className="w-full px-6 pt-3 pb-2 flex items-center justify-between text-xs font-mono text-white/60 z-30 select-none bg-gradient-to-b from-[#0d0403] to-transparent">
-          <span>9:41</span>
-          {/* Dynamic Island / Camera Notch */}
-          <div className="w-24 h-4 bg-black/80 rounded-full border border-white/10 flex items-center justify-center">
-            <div className="w-2 h-2 rounded-full bg-[#E63946] animate-pulse" />
-          </div>
-          <div className="flex items-center space-x-1.5">
-            <span className="text-[10px] bg-[#E63946]/30 text-[#E63946] px-1.5 py-0.5 rounded border border-[#E63946]/40 font-semibold">AI ON</span>
-            <div className="w-4 h-2.5 border border-white/60 rounded-sm flex items-center p-0.5">
-              <div className="w-full h-full bg-white/80 rounded-2xs" />
-            </div>
-          </div>
-        </div>
-
         {/* Scrollable Main Screen Body */}
-        <div className="flex-1 overflow-y-auto px-4 pb-24 pt-2 relative z-20">
+        <div className="flex-1 overflow-y-auto px-4 pb-24 pt-4 relative z-20">
           {children}
         </div>
 
         {/* Liquid Glass Bottom Navigation Bar */}
-        <nav className="absolute bottom-0 inset-x-0 h-20 bg-black/40 backdrop-blur-2xl border-t border-white/10 px-4 flex items-center justify-around z-40 sm:rounded-b-[46px]">
+        <nav className="fixed bottom-0 inset-x-0 h-20 bg-black/80 backdrop-blur-3xl border-t border-white/10 px-4 flex items-center justify-around z-40 pb-2">
           <button
             onClick={() => setActiveTab('upload')}
             className={`flex flex-col items-center justify-center space-y-1 transition-all duration-300 ${
