@@ -94,8 +94,11 @@ public class UploadFragment extends Fragment {
                 Toast.makeText(getContext(), "Iltimos, avval rasm tanlang yoki rasmga oling!", Toast.LENGTH_SHORT).show();
                 return;
             }
-            Toast.makeText(getContext(), "AI analiz boshlanmoqda (" + selectedGender + ")...", Toast.LENGTH_LONG).show();
-            // TODO: Navigate to Result/Scanning Fragment
+            
+            // Navigate to ResultFragment
+            requireActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, ResultFragment.newInstance(selectedGender))
+                .commit();
         });
 
         return view;

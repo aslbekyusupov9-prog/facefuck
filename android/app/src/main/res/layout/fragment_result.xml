@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_dark"
+    android:padding="24dp">
+
+    <!-- SCANNING LAYOUT -->
+    <LinearLayout
+        android:id="@+id/layout_scanning"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="visible">
+
+        <ProgressBar
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:indeterminateTint="@color/colorPrimary" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sun'iy intellekt yuzingizni tahlil qilmoqda..."
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginTop="24dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bu bir necha soniya vaqt olishi mumkin"
+            android:textColor="@color/white_transparent"
+            android:textSize="14sp"
+            android:layout_marginTop="8dp"/>
+    </LinearLayout>
+
+    <!-- RESULT LAYOUT -->
+    <LinearLayout
+        android:id="@+id/layout_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Natija tayyor!"
+            android:textColor="@color/colorAccent"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="24dp"/>
+
+        <LinearLayout
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:background="@drawable/bg_liquid_glass_accent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:elevation="8dp">
+
+            <TextView
+                android:id="@+id/tv_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="95"
+                android:textColor="@color/white"
+                android:textSize="64sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="/ 100"
+                android:textColor="@color/white_transparent"
+                android:textSize="18sp"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mukammal Go'zallik"
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_marginTop="24dp"/>
+
+        <TextView
+            android:id="@+id/tv_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Yuz tuzilishingiz juda mutanosib. Ayniqsa ko'z va jag' chiziqlari ideallikka yaqin."
+            android:textColor="@color/white_transparent"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="32dp"/>
+
+        <Button
+            android:id="@+id/btn_retry"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Boshqa rasm tahlil qilish"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:background="@drawable/bg_liquid_glass"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
