@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_upload"
+        android:icon="@android:drawable/ic_menu_camera"
+        android:title="Analiz" />
+    <item
+        android:id="@+id/nav_leaderboard"
+        android:icon="@android:drawable/ic_menu_sort_by_size"
+        android:title="Reyting" />
+    <item
+        android:id="@+id/nav_tips"
+        android:icon="@android:drawable/ic_menu_info_details"
+        android:title="Maslahat" />
+    <item
+        android:id="@+id/nav_profile"
+        android:icon="@android:drawable/ic_menu_myplaces"
+        android:title="Profil" />
+</menu>
