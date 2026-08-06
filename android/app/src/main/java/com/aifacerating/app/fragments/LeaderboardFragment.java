@@ -201,7 +201,7 @@ public class LeaderboardFragment extends Fragment {
             TextView tvM = new TextView(requireContext());
             tvM.setText("• " + m);
             tvM.setTextSize(14);
-            tvM.setTextColor(Color.LIGHTGRAY);
+            tvM.setTextColor(Color.LTGRAY);
             tvM.setPadding(0, 4, 0, 4);
             layout.addView(tvM);
         }
