@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 from app.models.user import User
 from app.models.analysis import FaceAnalysis
 from app.schemas.analysis import LeaderboardResponse, LeaderboardItem
@@ -6,19 +7,34 @@ from app.schemas.analysis import LeaderboardResponse, LeaderboardItem
 class LeaderboardService:
     @staticmethod
     def get_top_leaderboard(db: Session, limit: int = 50) -> LeaderboardResponse:
-        """Fetch top ranked users sorted by overall face analysis score."""
+        """Fetch top ranked unique users sorted by their highest face analysis score."""
+        # Query highest overall_score per user to prevent duplicate entries
+        subquery = (
+            db.query(
+                FaceAnalysis.user_id,
+                func.max(FaceAnalysis.overall_score).label("max_score")
+            )
+            .group_by(FaceAnalysis.user_id)
+            .subquery()
+        )
+
         results = (
             db.query(User, FaceAnalysis)
-            .join(FaceAnalysis, User.id == FaceAnalysis.user_id)
-            .order_by(FaceAnalysis.overall_score.desc())
+            .join(subquery, User.id == subquery.c.user_id)
+            .join(FaceAnalysis, (FaceAnalysis.user_id == subquery.c.user_id) & (FaceAnalysis.overall_score == subquery.c.max_score))
+            .order_by(subquery.c.max_score.desc())
             .limit(limit)
             .all()
         )
 
         items = []
-        for rank, (user, analysis) in enumerate(results, start=1):
+        seen_users = set()
+        for user, analysis in results:
+            if user.id in seen_users:
+                continue
+            seen_users.add(user.id)
             items.append(LeaderboardItem(
-                rank=rank,
+                rank=len(items) + 1,
                 nickname=user.nickname,
                 gender=user.gender,
                 overall_score=analysis.overall_score,

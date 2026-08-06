@@ -19,18 +19,22 @@ class AuthService:
             db.refresh(db_user)
             return db_user
 
-        hashed_pwd = get_password_hash(user_in.password) if user_in.password else None
-        new_user = User(
-            device_id=user_in.device_id,
-            nickname=user_in.nickname,
-            gender=user_in.gender,
-            hashed_password=hashed_pwd,
-            avatar_url=user_in.avatar_url
-        )
-        db.add(new_user)
-        db.commit()
-        db.refresh(new_user)
-        return new_user
+        try:
+            hashed_pwd = get_password_hash(user_in.password) if user_in.password else None
+            new_user = User(
+                device_id=user_in.device_id,
+                nickname=user_in.nickname,
+                gender=user_in.gender,
+                hashed_password=hashed_pwd,
+                avatar_url=user_in.avatar_url
+            )
+            db.add(new_user)
+            db.commit()
+            db.refresh(new_user)
+            return new_user
+        except Exception:
+            db.rollback()
+            return db.query(User).filter(User.device_id == user_in.device_id).first()
 
     @staticmethod
     def generate_token_for_user(user: User) -> str:
