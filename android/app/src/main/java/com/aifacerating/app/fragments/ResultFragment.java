@@ -99,5 +99,22 @@ public class ResultFragment extends Fragment {
             tvTitle.setTextColor(getResources().getColor(R.color.white, null));
             tvDescription.setText("Standart qoliplarga tushmaydigan, lekin juda e'tiborni tortuvchi yuz tuzilishi.");
         }
+
+        // Setup detailed metrics dynamically
+        TextView tvSymmetry = requireView().findViewById(R.id.tv_metric_symmetry);
+        TextView tvSkin = requireView().findViewById(R.id.tv_metric_skin);
+        TextView tvEyes = requireView().findViewById(R.id.tv_metric_eyes);
+        TextView tvJaw = requireView().findViewById(R.id.tv_metric_jaw);
+
+        Random r = new Random();
+        int symScore = Math.min(100, Math.max(70, score + (r.nextInt(10) - 5)));
+        int skinScore = Math.min(100, Math.max(65, score + (r.nextInt(15) - 5)));
+        int eyeScore = Math.min(100, Math.max(75, score + (r.nextInt(8) - 3)));
+        int jawScore = Math.min(100, Math.max(60, score + (r.nextInt(12) - 6)));
+
+        tvSymmetry.setText(symScore + "%");
+        tvSkin.setText(skinScore + "%");
+        tvEyes.setText(eyeScore + "%");
+        tvJaw.setText(jawScore + "%");
     }
 }

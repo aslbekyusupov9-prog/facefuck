@@ -29,12 +29,26 @@ public class LeaderboardFragment extends Fragment {
     }
 
     private void loadMockData() {
-        String[] names = {"Aziza", "Kamron", "Shaxzoda", "Dilmurod", "Zuhra", "Bekzod"};
-        int[] scores = {98, 95, 92, 89, 87, 81};
-        String[] genders = {"Ayol", "Erkak", "Ayol", "Erkak", "Ayol", "Erkak"};
+        String[] names = {"Aziza", "Kamron", "Shaxzoda", "Dilmurod", "Zuhra", "Bekzod", "Sardor", "Lola"};
+        int[] scores = {98, 95, 92, 89, 87, 81, 78, 75};
 
-        for (int i = 0; i < names.length; i++) {
-            addLeaderboardItem(i + 1, names[i], scores[i], genders[i]);
+        View view = requireView();
+        
+        // Setup Podium dynamically
+        if(names.length >= 3) {
+            ((TextView) view.findViewById(R.id.tv_podium_name_1)).setText(names[0]);
+            ((TextView) view.findViewById(R.id.tv_podium_score_1)).setText(String.valueOf(scores[0]));
+            
+            ((TextView) view.findViewById(R.id.tv_podium_name_2)).setText(names[1]);
+            ((TextView) view.findViewById(R.id.tv_podium_score_2)).setText(String.valueOf(scores[1]));
+            
+            ((TextView) view.findViewById(R.id.tv_podium_name_3)).setText(names[2]);
+            ((TextView) view.findViewById(R.id.tv_podium_score_3)).setText(String.valueOf(scores[2]));
+        }
+
+        // Add remaining to the list
+        for (int i = 3; i < names.length; i++) {
+            addLeaderboardItem(i + 1, names[i], scores[i], "");
         }
     }
 

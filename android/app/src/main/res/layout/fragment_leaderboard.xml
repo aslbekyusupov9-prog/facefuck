@@ -43,6 +43,61 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <!-- PODIUM FOR TOP 3 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="bottom|center_horizontal"
+                android:baselineAligned="false"
+                android:layout_marginBottom="24dp">
+                
+                <!-- Rank 2 -->
+                <LinearLayout
+                    android:id="@+id/podium_2"
+                    android:layout_width="0dp"
+                    android:layout_height="120dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:background="@drawable/bg_liquid_glass"
+                    android:layout_marginEnd="8dp">
+                    <TextView android:id="@+id/tv_podium_name_2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Kamron" android:textColor="@color/white" android:textStyle="bold" android:textSize="14sp"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="2" android:textColor="#C0C0C0" android:textSize="32sp" android:textStyle="bold"/>
+                    <TextView android:id="@+id/tv_podium_score_2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="95" android:textColor="@color/white_transparent" android:textSize="12sp"/>
+                </LinearLayout>
+
+                <!-- Rank 1 -->
+                <LinearLayout
+                    android:id="@+id/podium_1"
+                    android:layout_width="0dp"
+                    android:layout_height="160dp"
+                    android:layout_weight="1.2"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:background="@drawable/bg_liquid_glass_accent"
+                    android:layout_marginEnd="8dp">
+                    <TextView android:id="@+id/tv_podium_name_1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Aziza" android:textColor="@color/white" android:textStyle="bold" android:textSize="16sp"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="1" android:textColor="#FFD700" android:textSize="48sp" android:textStyle="bold"/>
+                    <TextView android:id="@+id/tv_podium_score_1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="98" android:textColor="@color/white_transparent" android:textSize="14sp"/>
+                </LinearLayout>
+
+                <!-- Rank 3 -->
+                <LinearLayout
+                    android:id="@+id/podium_3"
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:background="@drawable/bg_liquid_glass">
+                    <TextView android:id="@+id/tv_podium_name_3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Shaxzoda" android:textColor="@color/white" android:textStyle="bold" android:textSize="14sp"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="3" android:textColor="#CD7F32" android:textSize="28sp" android:textStyle="bold"/>
+                    <TextView android:id="@+id/tv_podium_score_3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="92" android:textColor="@color/white_transparent" android:textSize="12sp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Remaining List -->
             <!-- Items will be injected dynamically from Java -->
         </LinearLayout>
     </ScrollView>

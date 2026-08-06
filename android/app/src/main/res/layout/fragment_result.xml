@@ -16,10 +16,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:visibility="visible">
 
-        <ProgressBar
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:indeterminateTint="@color/colorPrimary" />
+        <com.aifacerating.app.views.FaceMeshScannerView
+            android:layout_width="250dp"
+            android:layout_height="300dp"
+            android:background="@drawable/bg_liquid_glass" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -103,8 +103,73 @@
             android:textColor="@color/white_transparent"
             android:textSize="16sp"
             android:gravity="center"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="32dp"/>
+            android:layout_marginTop="8dp"/>
+
+        <!-- Detailed Metrics -->
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:rowCount="2"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="32dp">
+
+            <!-- Item 1 -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp"
+                android:background="@drawable/bg_liquid_glass"
+                android:padding="16dp"
+                android:orientation="vertical"
+                android:gravity="center">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Simmetriya" android:textColor="@color/white_transparent" android:textSize="12sp"/>
+                <TextView android:id="@+id/tv_metric_symmetry" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="95%" android:textColor="@color/colorPrimary" android:textStyle="bold" android:textSize="20sp" android:layout_marginTop="4dp"/>
+            </LinearLayout>
+
+            <!-- Item 2 -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp"
+                android:background="@drawable/bg_liquid_glass"
+                android:padding="16dp"
+                android:orientation="vertical"
+                android:gravity="center">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Teri holati" android:textColor="@color/white_transparent" android:textSize="12sp"/>
+                <TextView android:id="@+id/tv_metric_skin" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="92%" android:textColor="@color/colorAccent" android:textStyle="bold" android:textSize="20sp" android:layout_marginTop="4dp"/>
+            </LinearLayout>
+
+            <!-- Item 3 -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp"
+                android:background="@drawable/bg_liquid_glass"
+                android:padding="16dp"
+                android:orientation="vertical"
+                android:gravity="center">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Ko'zlar" android:textColor="@color/white_transparent" android:textSize="12sp"/>
+                <TextView android:id="@+id/tv_metric_eyes" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="98%" android:textColor="@color/colorPrimary" android:textStyle="bold" android:textSize="20sp" android:layout_marginTop="4dp"/>
+            </LinearLayout>
+
+            <!-- Item 4 -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp"
+                android:background="@drawable/bg_liquid_glass"
+                android:padding="16dp"
+                android:orientation="vertical"
+                android:gravity="center">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Jag' chizig'i" android:textColor="@color/white_transparent" android:textSize="12sp"/>
+                <TextView android:id="@+id/tv_metric_jaw" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="90%" android:textColor="@color/colorAccent" android:textStyle="bold" android:textSize="20sp" android:layout_marginTop="4dp"/>
+            </LinearLayout>
+        </GridLayout>
 
         <Button
             android:id="@+id/btn_retry"
