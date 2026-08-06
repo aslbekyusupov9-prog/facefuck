@@ -227,5 +227,18 @@ public class ResultFragment extends Fragment {
                 symScore, skinScore, eyeScore, jawScore, goldenScore, thirdsScore
         );
         HistoryManager.saveHistoryItem(requireContext(), historyItem);
+
+        // Sync analysis to PostgreSQL Backend REST API asynchronously
+        String deviceId = android.provider.Settings.Secure.getString(requireContext().getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
+        com.aifacerating.app.network.ApiService.FaceAnalysisSaveDto saveDto = 
+            new com.aifacerating.app.network.ApiService.FaceAnalysisSaveDto(
+                deviceId, score, symScore, skinScore, eyeScore, jawScore, goldenScore, thirdsScore, titleText, descText
+            );
+        com.aifacerating.app.network.ApiClient.getService().saveAnalysis(saveDto).enqueue(new retrofit2.Callback<com.aifacerating.app.network.ApiService.ApiResponseDto>() {
+            @Override
+            public void onResponse(@NonNull retrofit2.Call<com.aifacerating.app.network.ApiService.ApiResponseDto> call, @NonNull retrofit2.Response<com.aifacerating.app.network.ApiService.ApiResponseDto> response) {}
+            @Override
+            public void onFailure(@NonNull retrofit2.Call<com.aifacerating.app.network.ApiService.ApiResponseDto> call, @NonNull Throwable t) {}
+        });
     }
 }
