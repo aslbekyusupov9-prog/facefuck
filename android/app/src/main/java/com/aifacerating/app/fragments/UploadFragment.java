@@ -85,8 +85,10 @@ public class UploadFragment extends Fragment {
         });
 
         btnCamera.setOnClickListener(v -> {
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            cameraLauncher.launch(intent);
+            // Navigate to Custom Camera Fragment for High Quality picture and Face Frame overlay
+            requireActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, CameraFragment.newInstance(selectedGender))
+                .commit();
         });
 
         btnAnalyze.setOnClickListener(v -> {

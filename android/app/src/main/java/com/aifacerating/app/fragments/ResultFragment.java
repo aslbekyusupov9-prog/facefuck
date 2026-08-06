@@ -17,8 +17,8 @@ import java.util.Random;
 
 public class ResultFragment extends Fragment {
 
-    private LinearLayout layoutScanning;
-    private LinearLayout layoutResult;
+    private View layoutScanning;
+    private View layoutResult;
     private TextView tvScore, tvTitle, tvDescription;
     private Button btnRetry;
     
@@ -46,7 +46,7 @@ public class ResultFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_result, container, false);
 
         layoutScanning = view.findViewById(R.id.layout_scanning);
-        layoutResult = view.findViewById(R.id.layout_result);
+        layoutResult = view.findViewById(R.id.layout_result_scroll);
         tvScore = view.findViewById(R.id.tv_score);
         tvTitle = view.findViewById(R.id.tv_title);
         tvDescription = view.findViewById(R.id.tv_description);
@@ -87,8 +87,8 @@ public class ResultFragment extends Fragment {
         layoutScanning.setVisibility(View.GONE);
         layoutResult.setVisibility(View.VISIBLE);
 
-        // Deterministic Random based on uploaded image
-        long seed = com.aifacerating.app.utils.ImageHolder.getInstance().getImageHash();
+        // Deterministic Random based on uploaded image pixels
+        long seed = com.aifacerating.app.utils.ImageHolder.getInstance().getImageHash(requireContext());
         Random r = new Random(seed);
 
         // Generate deterministic score between 65 and 99
