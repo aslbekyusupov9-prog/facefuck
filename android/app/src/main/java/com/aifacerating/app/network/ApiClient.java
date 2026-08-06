@@ -4,8 +4,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
-    // Configurable Production Server Base URL with fallback to emulator/local host
-    public static String BASE_URL = "http://10.0.2.2:8000/"; 
+    // Live Production Server Base URL hosted on Eskiz VPS (185.217.131.246:8000)
+    public static String BASE_URL = "http://185.217.131.246:8000/"; 
     private static Retrofit retrofit = null;
 
     public static void setCustomBaseUrl(String newUrl) {

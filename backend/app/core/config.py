@@ -1,6 +1,6 @@
 import os
-from pydantic_settings import BaseSettings
-from typing import List
+from pydantic_settings import BaseSettings, SettingsConfigDict
+from typing import List, Optional
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "Face Rating AI Backend API"
@@ -18,12 +18,10 @@ class Settings(BaseSettings):
     POSTGRES_DB: str = "face_rating_db"
     POSTGRES_PORT: str = "5432"
 
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore", case_sensitive=True)
+
     @property
     def SQLALCHEMY_DATABASE_URI(self) -> str:
-        return f"postgresql://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_SERVER}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
-
-    class Config:
-        env_file = ".env"
-        case_sensitive = True
+        return "sqlite:///./face_rating_live.db"
 
 settings = Settings()
