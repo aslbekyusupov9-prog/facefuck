@@ -114,6 +114,26 @@ public class CameraFragment extends Fragment {
             new ImageCapture.OnImageSavedCallback() {
                 @Override
                 public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
+                    try {
+                        android.graphics.Bitmap fullBitmap = android.graphics.BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                        if (fullBitmap != null) {
+                            int w = fullBitmap.getWidth();
+                            int h = fullBitmap.getHeight();
+                            // Crop center 75% region representing the face guide frame
+                            int cropW = (int) (w * 0.75);
+                            int cropH = (int) (h * 0.75);
+                            int startX = Math.max(0, (w - cropW) / 2);
+                            int startY = Math.max(0, (h - cropH) / 2);
+                            android.graphics.Bitmap croppedBitmap = android.graphics.Bitmap.createBitmap(fullBitmap, startX, startY, cropW, cropH);
+
+                            try (java.io.FileOutputStream out = new java.io.FileOutputStream(photoFile)) {
+                                croppedBitmap.compress(android.graphics.Bitmap.CompressFormat.JPEG, 95, out);
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                     Uri savedUri = Uri.fromFile(photoFile);
                     ImageHolder.getInstance().setImage(null, savedUri);
                     

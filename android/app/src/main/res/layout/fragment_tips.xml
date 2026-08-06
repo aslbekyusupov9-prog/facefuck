@@ -9,83 +9,144 @@
         android:id="@+id/tv_tips_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Foydali Maslahatlar"
+        android:text="Rasmni Yaxshilash Promptlari"
         android:textColor="@color/white"
-        android:textSize="28sp"
+        android:textSize="26sp"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
-        
+        android:layout_marginTop="8dp"/>
+
     <TextView
         android:id="@+id/tv_tips_subtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="AI eng to'g'ri baho berishi uchun"
+        android:text="AI eng to'g'ri va yuqori baho berishi uchun yo'riqnoma"
         android:textColor="@color/white_transparent"
-        android:textSize="14sp"
+        android:textSize="13sp"
         app:layout_constraintTop_toBottomOf="@id/tv_tips_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"/>
+        android:layout_marginTop="4dp"/>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@id/tv_tips_subtitle"
-        android:layout_marginTop="32dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:scrollbars="none"
+        android:layout_marginTop="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/bg_liquid_glass"
-            android:padding="24dp"
-            android:layout_marginBottom="16dp">
-            
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Yorug'lik"
-                android:textColor="@color/colorAccent"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="8dp"/>
-                
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Yuzingizga yorug'lik tekis tushishi kerak. Qorong'i yoki soya tushgan rasmlar reytingni pasaytirishi mumkin."
-                android:textColor="@color/white"
-                android:textSize="14sp" />
-        </LinearLayout>
+            android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/bg_liquid_glass"
-            android:padding="24dp">
-            
-            <TextView
-                android:layout_width="wrap_content"
+            <!-- Card 1: 720p HD Quality -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Neytral Holat"
-                android:textColor="@color/colorPrimary"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="8dp"/>
-                
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Kameraga to'g'ri qarang, ko'zoynak taqmang va yuzingiz to'liq ko'rinib tursin."
-                android:textColor="@color/white"
-                android:textSize="14sp" />
-        </LinearLayout>
+                android:orientation="vertical"
+                android:background="@drawable/bg_liquid_glass"
+                android:padding="20dp"
+                android:layout_marginBottom="16dp">
 
-    </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="📷 Rasm Sifati (Min 720p HD)"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="6dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rasmingiz ruxsati kamida 720p (720x1280) yoki undan yuqori bo'lishi lozim. Xira va past sifatli rasmlarda yuz nuqtalari to'liq aniqlanmaydi."
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <!-- Card 2: Lighting & Angle -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_liquid_glass"
+                android:padding="20dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="☀️ Tabiiy Yorug'lik"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="6dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Yuzingizga yorug'lik tekis va ro'parasidan tushishi lozim. Orqa fondan kelgan yorug'lik yoki kuchli soya yuz simmetriyasiga ta'sir qiladi."
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <!-- Card 3: Camera Prompt Frame -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_liquid_glass"
+                android:padding="20dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🎯 Ramkaga Moslash (Oval Frame Prompt)"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="6dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ilova kamerasidan foydalanganingizda yuzingizni tayyor chizilgan Oval Ramka ichiga to'liq va tekis joylashtiring. Kamera faqat ramka ichini qirqib tahlil qiladi."
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <!-- Card 4: Face Expression -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_liquid_glass"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="😐 Neytral Yuz Holati"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="6dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ko'zoynak, shapka yoki sochni yuzga tushirishdan qoching. Kameraga to'g'ri qarab, neytral (mimikasiz) holatda turing."
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

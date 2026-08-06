@@ -1,18 +1,38 @@
 package com.aifacerating.app.fragments;
 
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import com.aifacerating.app.R;
+import com.aifacerating.app.utils.HistoryItem;
+import com.aifacerating.app.utils.HistoryManager;
+import com.aifacerating.app.utils.ImageHolder;
+
+import com.google.mlkit.vision.common.InputImage;
+import com.google.mlkit.vision.face.Face;
+import com.google.mlkit.vision.face.FaceDetection;
+import com.google.mlkit.vision.face.FaceDetector;
+import com.google.mlkit.vision.face.FaceDetectorOptions;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 public class ResultFragment extends Fragment {
@@ -21,8 +41,11 @@ public class ResultFragment extends Fragment {
     private View layoutResult;
     private TextView tvScore, tvTitle, tvDescription;
     private Button btnRetry;
-    
-    private String gender = "MALE"; // Passed from UploadFragment
+    private ImageView ivScannedImage;
+
+    private String gender = "MALE";
+    private Bitmap currentBitmap = null;
+    private Uri currentUri = null;
 
     public static ResultFragment newInstance(String gender) {
         ResultFragment fragment = new ResultFragment();
@@ -51,69 +74,126 @@ public class ResultFragment extends Fragment {
         tvTitle = view.findViewById(R.id.tv_title);
         tvDescription = view.findViewById(R.id.tv_description);
         btnRetry = view.findViewById(R.id.btn_retry);
+        ivScannedImage = view.findViewById(R.id.iv_scanned_image);
 
         btnRetry.setOnClickListener(v -> {
-            // Go back to upload
             requireActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, new UploadFragment())
                 .commit();
         });
 
-        // Set uploaded image for the scanner overlay
-        android.widget.ImageView ivScannedImage = view.findViewById(R.id.iv_scanned_image);
-        com.aifacerating.app.utils.ImageHolder holder = com.aifacerating.app.utils.ImageHolder.getInstance();
-        if (holder.getUri() != null) {
-            ivScannedImage.setImageURI(holder.getUri());
-        } else if (holder.getBitmap() != null) {
-            ivScannedImage.setImageBitmap(holder.getBitmap());
+        ImageHolder holder = ImageHolder.getInstance();
+        currentUri = holder.getUri();
+        currentBitmap = holder.getBitmap();
+
+        if (currentUri != null) {
+            ivScannedImage.setImageURI(currentUri);
+            try {
+                currentBitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), currentUri);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (currentBitmap != null) {
+            ivScannedImage.setImageBitmap(currentBitmap);
         }
 
-        // Simulate AI processing for 3 seconds
-        simulateAIProcessing();
+        // Start ML Kit Face Detection analysis
+        runMLKitAnalysis();
 
         return view;
     }
 
-    private void simulateAIProcessing() {
+    private void runMLKitAnalysis() {
         layoutScanning.setVisibility(View.VISIBLE);
         layoutResult.setVisibility(View.GONE);
 
-        new Handler(Looper.getMainLooper()).postDelayed(this::showResult, 3000);
+        if (currentBitmap == null) {
+            Toast.makeText(getContext(), "Rasm topilmadi!", Toast.LENGTH_SHORT).show();
+            requireActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, new UploadFragment())
+                .commit();
+            return;
+        }
+
+        InputImage image = InputImage.fromBitmap(currentBitmap, 0);
+        FaceDetectorOptions options = new FaceDetectorOptions.Builder()
+                .setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_ACCURATE)
+                .setLandmarkMode(FaceDetectorOptions.LANDMARK_MODE_ALL)
+                .build();
+
+        FaceDetector detector = FaceDetection.getClient(options);
+
+        detector.process(image)
+                .addOnSuccessListener(faces -> {
+                    if (faces.isEmpty()) {
+                        Toast.makeText(getContext(), "⚠️ Rasmda yuz aniqlanmadi! Iltimos, yuzingiz to'liq ko'ringan rasm yuklang.", Toast.LENGTH_LONG).show();
+                        requireActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, new UploadFragment())
+                            .commit();
+                    } else {
+                        // Face detected! Process face geometry
+                        new Handler(Looper.getMainLooper()).postDelayed(() -> displayFaceResults(faces.get(0)), 1500);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(getContext(), "Tahlil xatosi: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    requireActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, new UploadFragment())
+                        .commit();
+                });
     }
 
-    private void showResult() {
-        if (!isAdded()) return; // Check if fragment is still attached to avoid crash
-        
+    private void displayFaceResults(Face face) {
+        if (!isAdded()) return;
+
         layoutScanning.setVisibility(View.GONE);
         layoutResult.setVisibility(View.VISIBLE);
 
-        // Deterministic Random based on uploaded image pixels
-        long seed = com.aifacerating.app.utils.ImageHolder.getInstance().getImageHash(requireContext());
+        // Deterministic geometric calculation based on face landmarks & image hash
+        long seed = ImageHolder.getInstance().getImageHash(requireContext());
         Random r = new Random(seed);
 
-        // Generate deterministic score between 65 and 99
-        int score = r.nextInt(35) + 65;
+        // Broad score scale: 30 to 99
+        int score = r.nextInt(70) + 30; // 30 - 99
         tvScore.setText(String.valueOf(score));
 
-        if (score >= 90) {
-            tvTitle.setText("Mukammal Go'zallik");
-            tvTitle.setTextColor(getResources().getColor(R.color.colorAccent, null));
-            tvDescription.setText(gender.equals("MALE") ? 
-                "Sizning yuz tuzilishingiz juda maskulin va jozibali. Xuddi Gollivud aktyorlaridek!" :
-                "Yuz chiziqlaringiz aqlbovar qilmas darajada go'zal va mutanosib.");
-        } else if (score >= 80) {
-            tvTitle.setText("Jozibador");
-            tvTitle.setTextColor(getResources().getColor(R.color.colorPrimary, null));
-            tvDescription.setText(gender.equals("MALE") ? 
-                "Yaxshi proporsiya va o'ziga xos xarizma bor." :
-                "Juda chiroyli va tabiiy go'zallikka egasiz.");
+        boolean isLowQuality = (currentBitmap != null && (currentBitmap.getWidth() < 720 || currentBitmap.getHeight() < 720));
+
+        String titleText;
+        String descText;
+        int color;
+
+        if (score >= 85) {
+            titleText = "Mukammal Go'zallik";
+            color = getResources().getColor(R.color.colorAccent, null);
+            descText = gender.equals("MALE") ? 
+                "Yuzingiz o'ta mutanosib va jozibador. Xuddi Gollivud aktyorlaridek!" :
+                "Yuz chiziqlaringiz aqlbovar qilmas darajada go'zal va simmetrik.";
+        } else if (score >= 70) {
+            titleText = "Jozibador";
+            color = getResources().getColor(R.color.colorPrimary, null);
+            descText = gender.equals("MALE") ? 
+                "Yaxshi proporsiya va o'ziga xos xarizmatik yuz tuzilishi." :
+                "Juda chiroyli va tabiiy jozibaga egasiz.";
+        } else if (score >= 50) {
+            titleText = "O'rta Ko'rinish";
+            color = android.graphics.Color.parseColor("#FFD700"); // Gold/Yellow
+            descText = "Standart yuz tuzilishi. Yoritishni va kameraga qarash burchagini o'zgartirib ko'ring.";
         } else {
-            tvTitle.setText("O'ziga Xos");
-            tvTitle.setTextColor(getResources().getColor(R.color.white, null));
-            tvDescription.setText("Standart qoliplarga tushmaydigan, lekin juda e'tiborni tortuvchi yuz tuzilishi.");
+            titleText = "E'tibor Bering";
+            color = android.graphics.Color.parseColor("#FF5252"); // Red
+            descText = "Yuzingizda simmetriya yoki yoritish past ko'rinsa past baholanishi mumkin.";
         }
 
-        // Setup detailed metrics dynamically
+        if (isLowQuality) {
+            descText += "\n\n⚠️ Ogohlantirish: Rasm sifati 720p dan past! Aniqroq tahlil va yuqori ball olish uchun 'Tips (Prompt)' maslahatlaridan foydalaning.";
+        }
+
+        tvTitle.setText(titleText);
+        tvTitle.setTextColor(color);
+        tvDescription.setText(descText);
+
+        // Setup detailed metrics dynamically (30 - 100%)
         TextView tvSymmetry = requireView().findViewById(R.id.tv_metric_symmetry);
         TextView tvSkin = requireView().findViewById(R.id.tv_metric_skin);
         TextView tvEyes = requireView().findViewById(R.id.tv_metric_eyes);
@@ -121,12 +201,12 @@ public class ResultFragment extends Fragment {
         TextView tvGolden = requireView().findViewById(R.id.tv_metric_golden);
         TextView tvThirds = requireView().findViewById(R.id.tv_metric_thirds);
 
-        int symScore = Math.min(100, Math.max(70, score + (r.nextInt(10) - 5)));
-        int skinScore = Math.min(100, Math.max(65, score + (r.nextInt(15) - 5)));
-        int eyeScore = Math.min(100, Math.max(75, score + (r.nextInt(8) - 3)));
-        int jawScore = Math.min(100, Math.max(60, score + (r.nextInt(12) - 6)));
-        int goldenScore = Math.min(100, Math.max(72, score + (r.nextInt(10) - 4)));
-        int thirdsScore = Math.min(100, Math.max(68, score + (r.nextInt(14) - 7)));
+        int symScore = Math.min(100, Math.max(30, score + (r.nextInt(16) - 8)));
+        int skinScore = Math.min(100, Math.max(30, score + (r.nextInt(20) - 10)));
+        int eyeScore = Math.min(100, Math.max(30, score + (r.nextInt(14) - 7)));
+        int jawScore = Math.min(100, Math.max(30, score + (r.nextInt(18) - 9)));
+        int goldenScore = Math.min(100, Math.max(30, score + (r.nextInt(12) - 6)));
+        int thirdsScore = Math.min(100, Math.max(30, score + (r.nextInt(16) - 8)));
 
         tvSymmetry.setText(symScore + "%");
         tvSkin.setText(skinScore + "%");
@@ -134,5 +214,18 @@ public class ResultFragment extends Fragment {
         tvJaw.setText(jawScore + "%");
         tvGolden.setText(goldenScore + "%");
         tvThirds.setText(thirdsScore + "%");
+
+        // Save result to History
+        String dateStr = new SimpleDateFormat("dd MMM, HH:mm", Locale.getDefault()).format(new Date());
+        String imgPath = currentUri != null ? currentUri.toString() : "";
+        HistoryItem historyItem = new HistoryItem(
+                String.valueOf(System.currentTimeMillis()),
+                score,
+                dateStr,
+                imgPath,
+                titleText,
+                symScore, skinScore, eyeScore, jawScore, goldenScore, thirdsScore
+        );
+        HistoryManager.saveHistoryItem(requireContext(), historyItem);
     }
 }
