@@ -59,6 +59,15 @@ public class ResultFragment extends Fragment {
                 .commit();
         });
 
+        // Set uploaded image for the scanner overlay
+        android.widget.ImageView ivScannedImage = view.findViewById(R.id.iv_scanned_image);
+        com.aifacerating.app.utils.ImageHolder holder = com.aifacerating.app.utils.ImageHolder.getInstance();
+        if (holder.getUri() != null) {
+            ivScannedImage.setImageURI(holder.getUri());
+        } else if (holder.getBitmap() != null) {
+            ivScannedImage.setImageBitmap(holder.getBitmap());
+        }
+
         // Simulate AI processing for 3 seconds
         simulateAIProcessing();
 
@@ -78,8 +87,12 @@ public class ResultFragment extends Fragment {
         layoutScanning.setVisibility(View.GONE);
         layoutResult.setVisibility(View.VISIBLE);
 
-        // Generate mock score between 65 and 99
-        int score = new Random().nextInt(35) + 65;
+        // Deterministic Random based on uploaded image
+        long seed = com.aifacerating.app.utils.ImageHolder.getInstance().getImageHash();
+        Random r = new Random(seed);
+
+        // Generate deterministic score between 65 and 99
+        int score = r.nextInt(35) + 65;
         tvScore.setText(String.valueOf(score));
 
         if (score >= 90) {
@@ -105,16 +118,21 @@ public class ResultFragment extends Fragment {
         TextView tvSkin = requireView().findViewById(R.id.tv_metric_skin);
         TextView tvEyes = requireView().findViewById(R.id.tv_metric_eyes);
         TextView tvJaw = requireView().findViewById(R.id.tv_metric_jaw);
+        TextView tvGolden = requireView().findViewById(R.id.tv_metric_golden);
+        TextView tvThirds = requireView().findViewById(R.id.tv_metric_thirds);
 
-        Random r = new Random();
         int symScore = Math.min(100, Math.max(70, score + (r.nextInt(10) - 5)));
         int skinScore = Math.min(100, Math.max(65, score + (r.nextInt(15) - 5)));
         int eyeScore = Math.min(100, Math.max(75, score + (r.nextInt(8) - 3)));
         int jawScore = Math.min(100, Math.max(60, score + (r.nextInt(12) - 6)));
+        int goldenScore = Math.min(100, Math.max(72, score + (r.nextInt(10) - 4)));
+        int thirdsScore = Math.min(100, Math.max(68, score + (r.nextInt(14) - 7)));
 
         tvSymmetry.setText(symScore + "%");
         tvSkin.setText(skinScore + "%");
         tvEyes.setText(eyeScore + "%");
         tvJaw.setText(jawScore + "%");
+        tvGolden.setText(goldenScore + "%");
+        tvThirds.setText(thirdsScore + "%");
     }
 }

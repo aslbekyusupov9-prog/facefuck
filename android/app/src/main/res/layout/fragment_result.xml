@@ -16,10 +16,22 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:visibility="visible">
 
-        <com.aifacerating.app.views.FaceMeshScannerView
+        <FrameLayout
             android:layout_width="250dp"
             android:layout_height="300dp"
-            android:background="@drawable/bg_liquid_glass" />
+            android:background="@drawable/bg_liquid_glass">
+            
+            <ImageView
+                android:id="@+id/iv_scanned_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:alpha="0.7"/>
+
+            <com.aifacerating.app.views.FaceMeshScannerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </FrameLayout>
 
         <TextView
             android:layout_width="wrap_content"
@@ -110,7 +122,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:columnCount="2"
-            android:rowCount="2"
+            android:rowCount="3"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="32dp">
 
@@ -168,6 +180,34 @@
                 android:gravity="center">
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Jag' chizig'i" android:textColor="@color/white_transparent" android:textSize="12sp"/>
                 <TextView android:id="@+id/tv_metric_jaw" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="90%" android:textColor="@color/colorAccent" android:textStyle="bold" android:textSize="20sp" android:layout_marginTop="4dp"/>
+            </LinearLayout>
+
+            <!-- Item 5: Golden Ratio -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp"
+                android:background="@drawable/bg_liquid_glass"
+                android:padding="16dp"
+                android:orientation="vertical"
+                android:gravity="center">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Oltin Nisbat" android:textColor="@color/white_transparent" android:textSize="12sp"/>
+                <TextView android:id="@+id/tv_metric_golden" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="94%" android:textColor="@color/colorPrimary" android:textStyle="bold" android:textSize="20sp" android:layout_marginTop="4dp"/>
+            </LinearLayout>
+
+            <!-- Item 6: Facial Thirds -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp"
+                android:background="@drawable/bg_liquid_glass"
+                android:padding="16dp"
+                android:orientation="vertical"
+                android:gravity="center">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Yuz proporsiyasi" android:textColor="@color/white_transparent" android:textSize="12sp"/>
+                <TextView android:id="@+id/tv_metric_thirds" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="88%" android:textColor="@color/colorAccent" android:textStyle="bold" android:textSize="20sp" android:layout_marginTop="4dp"/>
             </LinearLayout>
         </GridLayout>
 

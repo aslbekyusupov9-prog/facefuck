@@ -95,6 +95,9 @@ public class UploadFragment extends Fragment {
                 return;
             }
             
+            // Save image for ResultFragment
+            com.aifacerating.app.utils.ImageHolder.getInstance().setImage(selectedBitmap, selectedImageUri);
+
             // Navigate to ResultFragment
             requireActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, ResultFragment.newInstance(selectedGender))
