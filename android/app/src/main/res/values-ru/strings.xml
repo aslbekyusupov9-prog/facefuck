@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AI Face Rating</string>
+    <string name="title_activity_main">AI Face Rating</string>
+    <string name="package_name">com.aifacerating.app</string>
+    <string name="custom_url_scheme">com.aifacerating.app</string>
+
+    <string name="nav_scan">Сканер</string>
+    <string name="nav_rating">Рейтинг</string>
+    <string name="nav_tips">Советы</string>
+    <string name="nav_profile">Профиль</string>
+
+    <string name="scan_title">Сканируйте ваше лицо</string>
+    <string name="scan_subtitle">ИИ оценивает симметрию лица и золотое сечение</string>
+    <string name="btn_take_photo">Сделать фото на камеру</string>
+    <string name="btn_select_gallery">Выбрать из галереи</string>
+
+    <string name="result_ready">Результат готов!</string>
+    <string name="btn_share_story">📲 Поделиться в Story</string>
+    <string name="btn_retry_analysis">Анализировать другое фото</string>
+
+    <string name="settings_title">Настройки</string>
+    <string name="settings_language">Язык приложения</string>
+    <string name="settings_auto_crop">Авто-обрезка лица</string>
+    <string name="settings_mirror">Зеркальный режим камеры</string>
+    <string name="settings_auto_save">Автосохранение в историю</string>
+    <string name="settings_reminder">Еженедельное напоминание</string>
+    <string name="settings_clear_history">Очистить историю</string>
+</resources>

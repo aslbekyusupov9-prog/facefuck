@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,12 +42,14 @@ public class ResultFragment extends Fragment {
     private View layoutScanning;
     private View layoutResult;
     private TextView tvScore, tvTitle, tvDescription;
-    private Button btnRetry;
+    private Button btnRetry, btnShare;
     private ImageView ivScannedImage;
 
     private String gender = "MALE";
     private Bitmap currentBitmap = null;
     private Uri currentUri = null;
+    private int finalOverallScore = 95;
+    private String finalTitleText = "Mukammal Go'zallik";
 
     public static ResultFragment newInstance(String gender) {
         ResultFragment fragment = new ResultFragment();
@@ -75,12 +78,21 @@ public class ResultFragment extends Fragment {
         tvTitle = view.findViewById(R.id.tv_title);
         tvDescription = view.findViewById(R.id.tv_description);
         btnRetry = view.findViewById(R.id.btn_retry);
+        btnShare = view.findViewById(R.id.btn_share_result);
         ivScannedImage = view.findViewById(R.id.iv_scanned_image);
 
         btnRetry.setOnClickListener(v -> {
             requireActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, new UploadFragment())
                 .commit();
+        });
+
+        // Instagram / Telegram Story Share Trigger
+        btnShare.setOnClickListener(v -> {
+            if (layoutResult != null) {
+                String shareText = "🔥 Mening AI Yuz Tahlilim Bali: " + finalOverallScore + "/100 — " + finalTitleText + "!\n\nAI Face Rating ilovasidan o'z natijangizni sinab ko'ring!";
+                ImageUtils.shareViewToSocial(requireContext(), layoutResult, shareText);
+            }
         });
 
         ImageHolder holder = ImageHolder.getInstance();
@@ -176,7 +188,7 @@ public class ResultFragment extends Fragment {
         FaceLandmark rightEye = face.getLandmark(FaceLandmark.RIGHT_EYE);
         FaceLandmark noseBase = face.getLandmark(FaceLandmark.NOSE_BASE);
 
-        int symScore = 80; // default fallback if landmarks missing
+        int symScore = 80;
         if (leftEye != null && rightEye != null && noseBase != null) {
             PointF pLeft = leftEye.getPosition();
             PointF pRight = rightEye.getPosition();
@@ -218,6 +230,7 @@ public class ResultFragment extends Fragment {
 
         // Overall Score average
         int overallScore = (goldenScore + symScore + thirdsScore + eyeScore + jawScore + skinScore) / 6;
+        finalOverallScore = overallScore;
         tvScore.setText(String.valueOf(overallScore));
 
         // Low Quality Warning check
@@ -249,6 +262,7 @@ public class ResultFragment extends Fragment {
             descText = "Yuzingizda simmetriya yoki yoritish past ko'rinsa past baholanishi mumkin.";
         }
 
+        finalTitleText = titleText;
         if (isLowQuality) {
             descText += "\n\n⚠️ OGOHLANTIRISH: Rasm sifati 720p dan past (Xira yoki Past Ruxsat)! Aniqroq tahlil va yuqori ball uchun 'Tips (Prompt)' maslahatlariga binoan yoritilgan joyda tikka qarash tavsiya etiladi.";
         }
@@ -257,7 +271,7 @@ public class ResultFragment extends Fragment {
         tvTitle.setTextColor(color);
         tvDescription.setText(descText);
 
-        // Update UI Metric scores
+        // Update UI Metric scores & Animated Progress Bars
         TextView tvSymmetry = requireView().findViewById(R.id.tv_metric_symmetry);
         TextView tvSkin = requireView().findViewById(R.id.tv_metric_skin);
         TextView tvEyes = requireView().findViewById(R.id.tv_metric_eyes);
@@ -265,12 +279,26 @@ public class ResultFragment extends Fragment {
         TextView tvGolden = requireView().findViewById(R.id.tv_metric_golden);
         TextView tvThirds = requireView().findViewById(R.id.tv_metric_thirds);
 
+        ProgressBar pbSymmetry = requireView().findViewById(R.id.pb_metric_symmetry);
+        ProgressBar pbSkin = requireView().findViewById(R.id.pb_metric_skin);
+        ProgressBar pbEyes = requireView().findViewById(R.id.pb_metric_eyes);
+        ProgressBar pbJaw = requireView().findViewById(R.id.pb_metric_jaw);
+        ProgressBar pbGolden = requireView().findViewById(R.id.pb_metric_golden);
+        ProgressBar pbThirds = requireView().findViewById(R.id.pb_metric_thirds);
+
         tvSymmetry.setText(symScore + "%");
         tvSkin.setText(skinScore + "%");
         tvEyes.setText(eyeScore + "%");
         tvJaw.setText(jawScore + "%");
         tvGolden.setText(goldenScore + "%");
         tvThirds.setText(thirdsScore + "%");
+
+        if (pbSymmetry != null) pbSymmetry.setProgress(symScore);
+        if (pbSkin != null) pbSkin.setProgress(skinScore);
+        if (pbEyes != null) pbEyes.setProgress(eyeScore);
+        if (pbJaw != null) pbJaw.setProgress(jawScore);
+        if (pbGolden != null) pbGolden.setProgress(goldenScore);
+        if (pbThirds != null) pbThirds.setProgress(thirdsScore);
 
         // Save permanently to Internal Storage and History if enabled
         String permanentUriStr = ImageUtils.saveToInternalStorage(requireContext(), currentBitmap, "scan_" + System.currentTimeMillis());
@@ -288,7 +316,7 @@ public class ResultFragment extends Fragment {
             HistoryManager.saveHistoryItem(requireContext(), historyItem);
         }
 
-        // Sync analysis to PostgreSQL Backend REST API asynchronously with error feedback
+        // Sync analysis to PostgreSQL Backend REST API asynchronously
         String deviceId = android.provider.Settings.Secure.getString(requireContext().getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
         com.aifacerating.app.network.ApiService.FaceAnalysisSaveDto saveDto = 
             new com.aifacerating.app.network.ApiService.FaceAnalysisSaveDto(

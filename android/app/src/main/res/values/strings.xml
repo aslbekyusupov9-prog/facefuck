@@ -4,4 +4,26 @@
     <string name="title_activity_main">AI Face Rating</string>
     <string name="package_name">com.aifacerating.app</string>
     <string name="custom_url_scheme">com.aifacerating.app</string>
+
+    <string name="nav_scan">Skaner</string>
+    <string name="nav_rating">Reyting</string>
+    <string name="nav_tips">Maslahatlar</string>
+    <string name="nav_profile">Profil</string>
+
+    <string name="scan_title">Yuzingizni skanerlang</string>
+    <string name="scan_subtitle">Sun\'iy intellekt yuz simmetriyasi va oltin nisbatni baholaydi</string>
+    <string name="btn_take_photo">Kamera orqali rasmga tushish</string>
+    <string name="btn_select_gallery">Galereyadan tanlash</string>
+
+    <string name="result_ready">Natija tayyor!</string>
+    <string name="btn_share_story">📲 Natijani Story\'ga Ulashish</string>
+    <string name="btn_retry_analysis">Boshqa rasm tahlil qilish</string>
+
+    <string name="settings_title">Sozlamalar</string>
+    <string name="settings_language">Ilova tili</string>
+    <string name="settings_auto_crop">Avto-yuz qirqish (Auto-crop)</string>
+    <string name="settings_mirror">Kamera oyna rejimi (Mirror mode)</string>
+    <string name="settings_auto_save">Tarixga avto-saqlash</string>
+    <string name="settings_reminder">Haftalik eslatma</string>
+    <string name="settings_clear_history">Tarixni tozalash</string>
 </resources>

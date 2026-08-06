@@ -1,11 +1,15 @@
 package com.aifacerating.app.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.view.View;
+import androidx.core.content.FileProvider;
 import androidx.exifinterface.media.ExifInterface;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -102,6 +106,41 @@ public class ImageUtils {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    /**
+     * Renders any View (Result Card) into a high-res Bitmap and triggers Intent.ACTION_SEND to share via Instagram/Telegram Story.
+     */
+    public static void shareViewToSocial(Context context, View view, String shareTitle) {
+        if (context == null || view == null) return;
+        try {
+            Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            view.draw(canvas);
+
+            File cachePath = new File(context.getCacheDir(), "images");
+            if (!cachePath.exists()) cachePath.mkdirs();
+
+            File streamFile = new File(cachePath, "share_result_" + System.currentTimeMillis() + ".png");
+            FileOutputStream stream = new FileOutputStream(streamFile);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            stream.flush();
+            stream.close();
+
+            Uri contentUri = FileProvider.getUriForFile(context, "com.aifacerating.app.provider", streamFile);
+
+            if (contentUri != null) {
+                Intent shareIntent = new Intent();
+                shareIntent.setAction(Intent.ACTION_SEND);
+                shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                shareIntent.setDataAndType(contentUri, context.getContentResolver().getType(contentUri));
+                shareIntent.putExtra(Intent.EXTRA_STREAM, contentUri);
+                shareIntent.putExtra(Intent.EXTRA_TEXT, shareTitle);
+                context.startActivity(Intent.createChooser(shareIntent, "Natijani Ulashish (Instagram / Telegram)"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AI Face Rating</string>
+    <string name="title_activity_main">AI Face Rating</string>
+    <string name="package_name">com.aifacerating.app</string>
+    <string name="custom_url_scheme">com.aifacerating.app</string>
+
+    <string name="nav_scan">Scan</string>
+    <string name="nav_rating">Rating</string>
+    <string name="nav_tips">Tips</string>
+    <string name="nav_profile">Profile</string>
+
+    <string name="scan_title">Scan Your Face</string>
+    <string name="scan_subtitle">AI evaluates facial symmetry and golden ratio</string>
+    <string name="btn_take_photo">Take Photo with Camera</string>
+    <string name="btn_select_gallery">Choose from Gallery</string>
+
+    <string name="result_ready">Result Ready!</string>
+    <string name="btn_share_story">📲 Share Result to Story</string>
+    <string name="btn_retry_analysis">Analyze Another Photo</string>
+
+    <string name="settings_title">Settings</string>
+    <string name="settings_language">App Language</string>
+    <string name="settings_auto_crop">Auto Face Crop</string>
+    <string name="settings_mirror">Front Camera Mirror Mode</string>
+    <string name="settings_auto_save">Auto-save to History</string>
+    <string name="settings_reminder">Weekly Reminder</string>
+    <string name="settings_clear_history">Clear History</string>
+</resources>
