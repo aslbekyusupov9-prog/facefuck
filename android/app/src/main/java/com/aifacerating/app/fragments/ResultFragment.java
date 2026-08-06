@@ -73,6 +73,8 @@ public class ResultFragment extends Fragment {
     }
 
     private void showResult() {
+        if (!isAdded()) return; // Check if fragment is still attached to avoid crash
+        
         layoutScanning.setVisibility(View.GONE);
         layoutResult.setVisibility(View.VISIBLE);
 
