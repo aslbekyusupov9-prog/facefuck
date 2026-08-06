@@ -16,6 +16,11 @@ public class HistoryManager {
         List<HistoryItem> list = getHistory(context);
         list.add(0, item); // Add to the top of the list
         
+        // Cap history list size to 50 to prevent unbounded memory growth
+        if (list.size() > 50) {
+            list = list.subList(0, 50);
+        }
+        
         SharedPreferences pref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         Gson gson = new Gson();

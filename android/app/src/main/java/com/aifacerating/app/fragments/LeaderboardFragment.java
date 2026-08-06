@@ -36,16 +36,9 @@ public class LeaderboardFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_leaderboard, container, false);
         layoutList = view.findViewById(R.id.layout_leaderboard_list);
 
-        requestLocationPermission();
         fetchLeaderboardFromBackend(view);
 
         return view;
-    }
-
-    private void requestLocationPermission() {
-        if (androidx.core.content.ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
-        }
     }
 
     private void fetchLeaderboardFromBackend(View view) {

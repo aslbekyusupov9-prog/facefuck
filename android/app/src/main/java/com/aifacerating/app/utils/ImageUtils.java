@@ -7,6 +7,8 @@ import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.net.Uri;
 import androidx.exifinterface.media.ExifInterface;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 
 public class ImageUtils {
@@ -65,7 +67,6 @@ public class ImageUtils {
         int width = original.getWidth();
         int height = original.getHeight();
 
-        // Add 25% padding around the face bounding box for aesthetic zoom
         int padX = (int) (bounds.width() * 0.25f);
         int padY = (int) (bounds.height() * 0.35f);
 
@@ -80,5 +81,27 @@ public class ImageUtils {
         if (cropW <= 0 || cropH <= 0) return original;
 
         return Bitmap.createBitmap(original, left, top, cropW, cropH);
+    }
+
+    /**
+     * Saves bitmap permanently to App's Internal Storage directory so system cache cleanups don't delete images.
+     */
+    public static String saveToInternalStorage(Context context, Bitmap bitmap, String filename) {
+        if (context == null || bitmap == null) return null;
+        try {
+            File dir = new File(context.getFilesDir(), "app_images");
+            if (!dir.exists()) dir.mkdirs();
+
+            File imageFile = new File(dir, filename + ".jpg");
+            FileOutputStream fos = new FileOutputStream(imageFile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
+            fos.flush();
+            fos.close();
+
+            return Uri.fromFile(imageFile).toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

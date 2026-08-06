@@ -12,7 +12,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.os.LocaleListCompat;
 import androidx.fragment.app.Fragment;
 
 import com.aifacerating.app.R;
@@ -88,8 +90,14 @@ public class SettingsFragment extends Fragment {
         new AlertDialog.Builder(requireContext())
             .setTitle("Tilni tanlang")
             .setItems(languages, (dialog, which) -> {
-                UserProfileManager.setLanguage(requireContext(), codes[which]);
-                updateLanguageDisplay(codes[which]);
+                String chosenCode = codes[which];
+                UserProfileManager.setLanguage(requireContext(), chosenCode);
+                updateLanguageDisplay(chosenCode);
+
+                // Apply App Language Locale dynamically
+                LocaleListCompat appLocales = LocaleListCompat.forLanguageTags(chosenCode);
+                AppCompatDelegate.setApplicationLocales(appLocales);
+
                 Toast.makeText(requireContext(), "Til o'zgartirildi: " + languages[which], Toast.LENGTH_SHORT).show();
             })
             .show();
