@@ -125,6 +125,7 @@ public class ResultFragment extends Fragment {
 
         detector.process(image)
                 .addOnSuccessListener(faces -> {
+                    detector.close(); // Close detector resource to avoid Memory Leak
                     if (faces.isEmpty()) {
                         Toast.makeText(getContext(), "⚠️ Rasmda yuz aniqlanmadi! Iltimos, yuzingiz to'liq ko'ringan rasm yuklang.", Toast.LENGTH_LONG).show();
                         requireActivity().getSupportFragmentManager().beginTransaction()
@@ -136,6 +137,7 @@ public class ResultFragment extends Fragment {
                     }
                 })
                 .addOnFailureListener(e -> {
+                    detector.close(); // Close detector resource to avoid Memory Leak
                     Toast.makeText(getContext(), "Tahlil xatosi: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     requireActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container, new UploadFragment())

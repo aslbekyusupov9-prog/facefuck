@@ -172,6 +172,8 @@ public class CameraFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        cameraExecutor.shutdown();
+        if (cameraExecutor != null && !cameraExecutor.isShutdown()) {
+            cameraExecutor.shutdown();
+        }
     }
 }
