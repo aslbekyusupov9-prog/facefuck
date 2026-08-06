@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +17,9 @@ import androidx.fragment.app.Fragment;
 import com.aifacerating.app.R;
 import com.aifacerating.app.network.ApiClient;
 import com.aifacerating.app.network.ApiService;
+import com.aifacerating.app.utils.HistoryItem;
+import com.aifacerating.app.utils.HistoryManager;
+import com.aifacerating.app.utils.UserProfileManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,28 +88,63 @@ public class LeaderboardFragment extends Fragment {
         }
     }
 
+    /**
+     * Build dynamic leaderboard prioritizing current active User as #1 (TOP 1 Champion).
+     */
     private void loadFallbackLeaderboard(View view) {
-        if (!isAdded()) return;
-        List<ApiService.LeaderboardItemDto> fallbackList = new ArrayList<>();
-        String[] names = {"Aziza", "Kamron", "Shaxzoda", "Dilmurod", "Zuhra", "Bekzod", "Sardor", "Lola", "Jasur", "Nigora"};
-        int[] scores = {98, 95, 92, 89, 87, 85, 82, 79, 76, 73};
+        if (!isAdded() || getContext() == null) return;
+        List<ApiService.LeaderboardItemDto> dynamicList = new ArrayList<>();
 
-        for (int i = 0; i < names.length; i++) {
-            ApiService.LeaderboardItemDto item = new ApiService.LeaderboardItemDto();
-            item.rank = i + 1;
-            item.nickname = names[i];
-            item.overall_score = scores[i];
-            item.title = scores[i] >= 85 ? "Mukammal Go'zallik" : "Jozibador";
-            item.symmetry_score = scores[i] - 2;
-            item.skin_score = scores[i] - 4;
-            item.eyes_score = scores[i] - 1;
-            item.jaw_score = scores[i] - 3;
-            item.golden_ratio_score = scores[i] - 2;
-            item.facial_thirds_score = scores[i] - 5;
-            fallbackList.add(item);
+        // Get Current User's Nickname & Highest Analyzed Score from History
+        String userNick = UserProfileManager.getNickname(requireContext());
+        if (userNick == null || userNick.trim().isEmpty()) userNick = "Siz (Foydalanuvchi)";
+
+        List<HistoryItem> history = HistoryManager.getHistory(requireContext());
+        int userScore = 98; // Default highest score if new
+        HistoryItem latestHistory = null;
+        if (!history.isEmpty()) {
+            latestHistory = history.get(0);
+            for (HistoryItem h : history) {
+                if (h.getScore() > userScore) userScore = h.getScore();
+            }
         }
 
-        displayLeaderboardData(view, fallbackList);
+        // #1 Rank - Current User as Champion
+        ApiService.LeaderboardItemDto userRank1 = new ApiService.LeaderboardItemDto();
+        userRank1.rank = 1;
+        userRank1.nickname = userNick + " 👑";
+        userRank1.overall_score = userScore;
+        userRank1.title = userScore >= 85 ? "Mukammal Go'zallik" : "Jozibador Champion";
+        userRank1.symmetry_score = latestHistory != null ? latestHistory.getSymmetry() : userScore - 1;
+        userRank1.skin_score = latestHistory != null ? latestHistory.getSkin() : userScore - 3;
+        userRank1.eyes_score = latestHistory != null ? latestHistory.getEyes() : userScore - 2;
+        userRank1.jaw_score = latestHistory != null ? latestHistory.getJaw() : userScore - 2;
+        userRank1.golden_ratio_score = latestHistory != null ? latestHistory.getGolden() : userScore - 1;
+        userRank1.facial_thirds_score = latestHistory != null ? latestHistory.getThirds() : userScore - 4;
+        dynamicList.add(userRank1);
+
+        // Competitor entries ranked below the user
+        String[] otherNames = {"Malika", "Kamron", "Jasur", "Sardor", "Lola", "Bekzod", "Zuhra", "Nigora", "Dilshod"};
+        int currentScore = Math.max(40, userScore - 3);
+
+        for (int i = 0; i < otherNames.length; i++) {
+            ApiService.LeaderboardItemDto item = new ApiService.LeaderboardItemDto();
+            item.rank = i + 2;
+            item.nickname = otherNames[i];
+            item.overall_score = currentScore;
+            item.title = currentScore >= 85 ? "Jozibador" : "O'rta Ko'rinish";
+            item.symmetry_score = Math.max(35, currentScore - 2);
+            item.skin_score = Math.max(35, currentScore - 4);
+            item.eyes_score = Math.max(35, currentScore - 1);
+            item.jaw_score = Math.max(35, currentScore - 3);
+            item.golden_ratio_score = Math.max(35, currentScore - 2);
+            item.facial_thirds_score = Math.max(35, currentScore - 5);
+            dynamicList.add(item);
+
+            currentScore = Math.max(40, currentScore - 3);
+        }
+
+        displayLeaderboardData(view, dynamicList);
     }
 
     private void addLeaderboardItem(ApiService.LeaderboardItemDto item) {
