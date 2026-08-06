@@ -22,6 +22,7 @@ import com.aifacerating.app.R;
 import com.aifacerating.app.utils.HistoryItem;
 import com.aifacerating.app.utils.HistoryManager;
 import com.aifacerating.app.utils.ImageHolder;
+import com.aifacerating.app.utils.ImageUtils;
 
 import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.face.Face;
@@ -86,18 +87,16 @@ public class ResultFragment extends Fragment {
         currentUri = holder.getUri();
         currentBitmap = holder.getBitmap();
 
+        // EXIF Orientation Fix: Get upright rotated bitmap
         if (currentUri != null) {
-            ivScannedImage.setImageURI(currentUri);
-            try {
-                currentBitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), currentUri);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else if (currentBitmap != null) {
+            currentBitmap = ImageUtils.getCorrectlyOrientedBitmap(requireContext(), currentUri);
+        }
+
+        if (currentBitmap != null) {
             ivScannedImage.setImageBitmap(currentBitmap);
         }
 
-        // Start ML Kit Face Detection analysis
+        // Start ML Kit Face Detection & Auto-Crop analysis
         runMLKitAnalysis();
 
         return view;
@@ -125,19 +124,26 @@ public class ResultFragment extends Fragment {
 
         detector.process(image)
                 .addOnSuccessListener(faces -> {
-                    detector.close(); // Close detector resource to avoid Memory Leak
+                    detector.close();
                     if (faces.isEmpty()) {
                         Toast.makeText(getContext(), "⚠️ Rasmda yuz aniqlanmadi! Iltimos, yuzingiz to'liq ko'ringan rasm yuklang.", Toast.LENGTH_LONG).show();
                         requireActivity().getSupportFragmentManager().beginTransaction()
                             .replace(R.id.fragment_container, new UploadFragment())
                             .commit();
                     } else {
-                        // Face detected! Process face geometry
-                        new Handler(Looper.getMainLooper()).postDelayed(() -> displayFaceResults(faces.get(0)), 1500);
+                        // Face detected! Perform Auto-Crop / Zoom to Face
+                        Face primaryFace = faces.get(0);
+                        Bitmap croppedFace = ImageUtils.cropToFace(currentBitmap, primaryFace.getBoundingBox());
+                        if (croppedFace != null) {
+                            currentBitmap = croppedFace;
+                            ivScannedImage.setImageBitmap(croppedFace);
+                        }
+
+                        new Handler(Looper.getMainLooper()).postDelayed(() -> displayFaceResults(primaryFace), 1500);
                     }
                 })
                 .addOnFailureListener(e -> {
-                    detector.close(); // Close detector resource to avoid Memory Leak
+                    detector.close();
                     Toast.makeText(getContext(), "Tahlil xatosi: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     requireActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container, new UploadFragment())
@@ -155,7 +161,6 @@ public class ResultFragment extends Fragment {
         long seed = ImageHolder.getInstance().getImageHash(requireContext());
         Random r = new Random(seed);
 
-        // Broad score scale: 30 to 99
         int score = r.nextInt(70) + 30; // 30 - 99
         tvScore.setText(String.valueOf(score));
 
@@ -179,23 +184,23 @@ public class ResultFragment extends Fragment {
                 "Juda chiroyli va tabiiy jozibaga egasiz.";
         } else if (score >= 50) {
             titleText = "O'rta Ko'rinish";
-            color = android.graphics.Color.parseColor("#FFD700"); // Gold/Yellow
+            color = android.graphics.Color.parseColor("#FFD700");
             descText = "Standart yuz tuzilishi. Yoritishni va kameraga qarash burchagini o'zgartirib ko'ring.";
         } else {
             titleText = "E'tibor Bering";
-            color = android.graphics.Color.parseColor("#FF5252"); // Red
+            color = android.graphics.Color.parseColor("#FF5252");
             descText = "Yuzingizda simmetriya yoki yoritish past ko'rinsa past baholanishi mumkin.";
         }
 
         if (isLowQuality) {
-            descText += "\n\n⚠️ Ogohlantirish: Rasm sifati 720p dan past! Aniqroq tahlil va yuqori ball olish uchun 'Tips (Prompt)' maslahatlaridan foydalaning.";
+            descText += "\n\n⚠️ OGOHLANTIRISH: Rasm sifati 720p dan past (Xira yoki Past Ruxsat)! Aniqroq tahlil va yuqori ball uchun 'Tips (Prompt)' maslahatlariga binoan yoritilgan joyda tikka qarash tavsiya etiladi.";
         }
 
         tvTitle.setText(titleText);
         tvTitle.setTextColor(color);
         tvDescription.setText(descText);
 
-        // Setup detailed metrics dynamically (30 - 100%)
+        // Setup detailed metrics dynamically
         TextView tvSymmetry = requireView().findViewById(R.id.tv_metric_symmetry);
         TextView tvSkin = requireView().findViewById(R.id.tv_metric_skin);
         TextView tvEyes = requireView().findViewById(R.id.tv_metric_eyes);

@@ -6,9 +6,9 @@ from app.schemas.analysis import LeaderboardResponse, LeaderboardItem
 
 class LeaderboardService:
     @staticmethod
-    def get_top_leaderboard(db: Session, limit: int = 50) -> LeaderboardResponse:
-        """Fetch top ranked unique users sorted by their highest face analysis score."""
-        # Query highest overall_score per user to prevent duplicate entries
+    def get_top_leaderboard(db: Session, limit: int = 100) -> LeaderboardResponse:
+        """Fetch top 100 ranked unique users sorted by their highest face analysis score."""
+        # Query highest overall_score per user using subquery group_by to prevent duplicate users
         subquery = (
             db.query(
                 FaceAnalysis.user_id,
@@ -39,7 +39,13 @@ class LeaderboardService:
                 gender=user.gender,
                 overall_score=analysis.overall_score,
                 title=analysis.title,
-                avatar_url=user.avatar_url
+                avatar_url=user.avatar_url,
+                symmetry_score=analysis.symmetry_score,
+                skin_score=analysis.skin_score,
+                eyes_score=analysis.eyes_score,
+                jaw_score=analysis.jaw_score,
+                golden_ratio_score=analysis.golden_ratio_score,
+                facial_thirds_score=analysis.facial_thirds_score
             ))
 
         return LeaderboardResponse(total_users=len(items), leaderboard=items)

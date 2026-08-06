@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.InputType;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +28,7 @@ import com.aifacerating.app.R;
 import com.aifacerating.app.utils.HistoryItem;
 import com.aifacerating.app.utils.HistoryManager;
 import com.aifacerating.app.utils.UserProfileManager;
+import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.List;
 
@@ -39,9 +39,10 @@ public class ProfileFragment extends Fragment {
     private TextView tvAvgScore;
     private TextView tvEmptyHistory;
 
-    private ImageView ivUserAvatar;
+    private ShapeableImageView ivUserAvatar;
     private TextView tvAvatarPlaceholder;
     private TextView tvUserNickname;
+    private TextView tvUserBio;
     private FrameLayout layoutAvatarClick;
     private LinearLayout layoutEditNickname;
     private ImageView btnOpenSettings;
@@ -73,6 +74,7 @@ public class ProfileFragment extends Fragment {
         ivUserAvatar = view.findViewById(R.id.iv_user_avatar);
         tvAvatarPlaceholder = view.findViewById(R.id.tv_avatar_placeholder);
         tvUserNickname = view.findViewById(R.id.tv_user_nickname);
+        tvUserBio = view.findViewById(R.id.tv_user_bio);
         layoutAvatarClick = view.findViewById(R.id.layout_avatar_click);
         layoutEditNickname = view.findViewById(R.id.layout_edit_nickname);
         btnOpenSettings = view.findViewById(R.id.btn_open_settings);
@@ -86,8 +88,8 @@ public class ProfileFragment extends Fragment {
             avatarGalleryLauncher.launch(intent);
         });
 
-        // Change Nickname on Click
-        layoutEditNickname.setOnClickListener(v -> showEditNicknameDialog());
+        // Edit Profile (Nickname & Bio) on Click
+        layoutEditNickname.setOnClickListener(v -> showEditProfileDialog());
 
         // Open Settings Fragment
         btnOpenSettings.setOnClickListener(v -> {
@@ -103,7 +105,9 @@ public class ProfileFragment extends Fragment {
         if (getContext() == null) return;
 
         String nickname = UserProfileManager.getNickname(getContext());
+        String bio = UserProfileManager.getBio(getContext());
         tvUserNickname.setText(nickname);
+        tvUserBio.setText(bio);
 
         String avatarUriStr = UserProfileManager.getAvatarUri(getContext());
         if (avatarUriStr != null && !avatarUriStr.isEmpty()) {
@@ -114,30 +118,54 @@ public class ProfileFragment extends Fragment {
             } catch (Exception e) {
                 ivUserAvatar.setVisibility(View.GONE);
                 tvAvatarPlaceholder.setVisibility(View.VISIBLE);
-                tvAvatarPlaceholder.setText(nickname.substring(0, 1).toUpperCase());
+                tvAvatarPlaceholder.setText(nickname.isEmpty() ? "F" : nickname.substring(0, 1).toUpperCase());
             }
         } else {
             ivUserAvatar.setVisibility(View.GONE);
             tvAvatarPlaceholder.setVisibility(View.VISIBLE);
-            tvAvatarPlaceholder.setText(nickname.substring(0, 1).toUpperCase());
+            tvAvatarPlaceholder.setText(nickname.isEmpty() ? "F" : nickname.substring(0, 1).toUpperCase());
         }
     }
 
-    private void showEditNicknameDialog() {
+    private void showEditProfileDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setTitle("Ismingizni kiriting");
+        builder.setTitle("Profilni Tahrirlash");
 
-        final EditText input = new EditText(requireContext());
-        input.setInputType(InputType.TYPE_CLASS_TEXT);
-        input.setText(UserProfileManager.getNickname(requireContext()));
-        builder.setView(input);
+        LinearLayout layout = new LinearLayout(requireContext());
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setPadding(48, 24, 48, 24);
+
+        TextView lblNick = new TextView(requireContext());
+        lblNick.setText("Ismingiz / Nickname:");
+        lblNick.setTextSize(14);
+        lblNick.setTextColor(Color.GRAY);
+        layout.addView(lblNick);
+
+        final EditText etNickname = new EditText(requireContext());
+        etNickname.setText(UserProfileManager.getNickname(requireContext()));
+        layout.addView(etNickname);
+
+        TextView lblBio = new TextView(requireContext());
+        lblBio.setText("Bio (Siz haqingizda qisqa matn):");
+        lblBio.setTextSize(14);
+        lblBio.setTextColor(Color.GRAY);
+        lblBio.setPadding(0, 24, 0, 0);
+        layout.addView(lblBio);
+
+        final EditText etBio = new EditText(requireContext());
+        etBio.setText(UserProfileManager.getBio(requireContext()));
+        layout.addView(etBio);
+
+        builder.setView(layout);
 
         builder.setPositiveButton("Saqlash", (dialog, which) -> {
-            String newName = input.getText().toString().trim();
+            String newName = etNickname.getText().toString().trim();
+            String newBio = etBio.getText().toString().trim();
             if (!newName.isEmpty()) {
                 UserProfileManager.setNickname(requireContext(), newName);
+                UserProfileManager.setBio(requireContext(), newBio);
                 updateProfileUI();
-                Toast.makeText(getContext(), "Ismingiz saqlandi!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Profil saqlandi!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -182,7 +210,7 @@ public class ProfileFragment extends Fragment {
         card.setLayoutParams(params);
 
         // Thumbnail Image
-        ImageView ivThumb = new ImageView(getContext());
+        ShapeableImageView ivThumb = new ShapeableImageView(getContext());
         LinearLayout.LayoutParams imgParams = new LinearLayout.LayoutParams(120, 120);
         imgParams.setMargins(0, 0, 24, 0);
         ivThumb.setLayoutParams(imgParams);

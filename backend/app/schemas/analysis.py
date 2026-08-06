@@ -37,6 +37,12 @@ class LeaderboardItem(BaseModel):
     overall_score: int
     title: str
     avatar_url: Optional[str] = None
+    symmetry_score: int = 80
+    skin_score: int = 80
+    eyes_score: int = 80
+    jaw_score: int = 80
+    golden_ratio_score: int = 80
+    facial_thirds_score: int = 80
 
 class LeaderboardResponse(BaseModel):
     total_users: int

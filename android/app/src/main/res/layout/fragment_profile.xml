@@ -43,30 +43,32 @@
             android:orientation="vertical"
             android:gravity="center_horizontal">
 
-            <!-- User Info Header (Avatar & Nickname Edit) -->
+            <!-- User Info Header (100% Circle Avatar & Nickname/Bio Edit) -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:gravity="center"
                 android:background="@drawable/bg_liquid_glass"
-                android:padding="20dp"
+                android:padding="24dp"
                 android:layout_marginBottom="24dp">
 
                 <FrameLayout
                     android:id="@+id/layout_avatar_click"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
                     android:clickable="true"
                     android:focusable="true">
 
-                    <ImageView
+                    <!-- 100% Perfectly Rounded Circle Avatar -->
+                    <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/iv_user_avatar"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop"
                         android:background="@drawable/bg_liquid_glass_accent"
-                        android:padding="2dp"/>
+                        app:shapeAppearanceOverlay="@style/CircleImageView"
+                        android:padding="3dp"/>
 
                     <TextView
                         android:id="@+id/tv_avatar_placeholder"
@@ -74,17 +76,18 @@
                         android:layout_height="match_parent"
                         android:text="F"
                         android:textColor="@color/white"
-                        android:textSize="40sp"
+                        android:textSize="44sp"
                         android:textStyle="bold"
-                        android:gravity="center"/>
+                        android:gravity="center"
+                        android:background="@drawable/bg_liquid_glass_accent"/>
 
-                    <!-- Camera overlay badge -->
+                    <!-- Camera Overlay Badge -->
                     <ImageView
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
                         android:layout_gravity="bottom|end"
                         android:src="@android:drawable/ic_menu_camera"
-                        android:padding="4dp"
+                        android:padding="6dp"
                         android:background="@drawable/bg_liquid_glass_accent"/>
                 </FrameLayout>
 
@@ -96,8 +99,8 @@
                     android:gravity="center_vertical"
                     android:clickable="true"
                     android:focusable="true"
-                    android:layout_marginTop="12dp"
-                    android:padding="8dp">
+                    android:layout_marginTop="14dp"
+                    android:padding="6dp">
 
                     <TextView
                         android:id="@+id/tv_user_nickname"
@@ -105,23 +108,37 @@
                         android:layout_height="wrap_content"
                         android:text="Foydalanuvchi"
                         android:textColor="@color/white"
-                        android:textSize="20sp"
+                        android:textSize="22sp"
                         android:textStyle="bold"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text=" ✏️"
-                        android:textSize="16sp"/>
+                        android:textSize="18sp"/>
                 </LinearLayout>
+
+                <!-- User Bio Display -->
+                <TextView
+                    android:id="@+id/tv_user_bio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="AI yuz tahlili ishqibozi ✨"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="14sp"
+                    android:textStyle="italic"
+                    android:gravity="center"
+                    android:layout_marginTop="4dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Rasmni o'zgartirish uchun avatar ustiga bosing"
+                    android:text="Profilni tahrirlash uchun ism yoki avatar ustiga bosing"
                     android:textColor="@color/white_transparent"
                     android:textSize="12sp"
-                    android:layout_marginTop="4dp"/>
+                    android:layout_marginTop="8dp"/>
             </LinearLayout>
 
             <!-- Stat summary -->

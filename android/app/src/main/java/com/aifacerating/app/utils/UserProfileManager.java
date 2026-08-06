@@ -7,6 +7,7 @@ public class UserProfileManager {
     private static final String PREF_NAME = "user_profile_prefs";
     
     private static final String KEY_NICKNAME = "user_nickname";
+    private static final String KEY_BIO = "user_bio";
     private static final String KEY_AVATAR_URI = "user_avatar_uri";
     
     private static final String KEY_AUTO_CROP = "setting_auto_crop";
@@ -26,6 +27,15 @@ public class UserProfileManager {
 
     public static void setNickname(Context context, String nickname) {
         getPrefs(context).edit().putString(KEY_NICKNAME, nickname).apply();
+    }
+
+    // Profile Bio
+    public static String getBio(Context context) {
+        return getPrefs(context).getString(KEY_BIO, "AI yuz tahlili ishqibozi ✨");
+    }
+
+    public static void setBio(Context context, String bio) {
+        getPrefs(context).edit().putString(KEY_BIO, bio).apply();
     }
 
     // Profile Avatar

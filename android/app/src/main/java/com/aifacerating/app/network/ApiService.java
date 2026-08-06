@@ -15,6 +15,12 @@ public interface ApiService {
         public int overall_score;
         public String title;
         public String avatar_url;
+        public int symmetry_score = 80;
+        public int skin_score = 80;
+        public int eyes_score = 80;
+        public int jaw_score = 80;
+        public int golden_ratio_score = 80;
+        public int facial_thirds_score = 80;
     }
 
     class LeaderboardResponseDto {
