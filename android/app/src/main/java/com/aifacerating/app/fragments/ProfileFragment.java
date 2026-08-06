@@ -1,16 +1,26 @@
 package com.aifacerating.app.fragments;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.text.InputType;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -18,6 +28,7 @@ import androidx.fragment.app.Fragment;
 import com.aifacerating.app.R;
 import com.aifacerating.app.utils.HistoryItem;
 import com.aifacerating.app.utils.HistoryManager;
+import com.aifacerating.app.utils.UserProfileManager;
 
 import java.util.List;
 
@@ -27,6 +38,27 @@ public class ProfileFragment extends Fragment {
     private TextView tvHistoryCount;
     private TextView tvAvgScore;
     private TextView tvEmptyHistory;
+
+    private ImageView ivUserAvatar;
+    private TextView tvAvatarPlaceholder;
+    private TextView tvUserNickname;
+    private FrameLayout layoutAvatarClick;
+    private LinearLayout layoutEditNickname;
+    private ImageView btnOpenSettings;
+
+    private final ActivityResultLauncher<Intent> avatarGalleryLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    Uri selectedUri = result.getData().getData();
+                    if (selectedUri != null) {
+                        UserProfileManager.setAvatarUri(requireContext(), selectedUri.toString());
+                        updateProfileUI();
+                        Toast.makeText(getContext(), "Profil rasmi yangilandi!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+    );
 
     @Nullable
     @Override
@@ -38,9 +70,79 @@ public class ProfileFragment extends Fragment {
         tvAvgScore = view.findViewById(R.id.tv_avg_score);
         tvEmptyHistory = view.findViewById(R.id.tv_empty_history);
 
+        ivUserAvatar = view.findViewById(R.id.iv_user_avatar);
+        tvAvatarPlaceholder = view.findViewById(R.id.tv_avatar_placeholder);
+        tvUserNickname = view.findViewById(R.id.tv_user_nickname);
+        layoutAvatarClick = view.findViewById(R.id.layout_avatar_click);
+        layoutEditNickname = view.findViewById(R.id.layout_edit_nickname);
+        btnOpenSettings = view.findViewById(R.id.btn_open_settings);
+
+        updateProfileUI();
         loadHistoryData();
 
+        // Change Avatar on Click
+        layoutAvatarClick.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            avatarGalleryLauncher.launch(intent);
+        });
+
+        // Change Nickname on Click
+        layoutEditNickname.setOnClickListener(v -> showEditNicknameDialog());
+
+        // Open Settings Fragment
+        btnOpenSettings.setOnClickListener(v -> {
+            requireActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, new SettingsFragment())
+                .commit();
+        });
+
         return view;
+    }
+
+    private void updateProfileUI() {
+        if (getContext() == null) return;
+
+        String nickname = UserProfileManager.getNickname(getContext());
+        tvUserNickname.setText(nickname);
+
+        String avatarUriStr = UserProfileManager.getAvatarUri(getContext());
+        if (avatarUriStr != null && !avatarUriStr.isEmpty()) {
+            try {
+                ivUserAvatar.setImageURI(Uri.parse(avatarUriStr));
+                ivUserAvatar.setVisibility(View.VISIBLE);
+                tvAvatarPlaceholder.setVisibility(View.GONE);
+            } catch (Exception e) {
+                ivUserAvatar.setVisibility(View.GONE);
+                tvAvatarPlaceholder.setVisibility(View.VISIBLE);
+                tvAvatarPlaceholder.setText(nickname.substring(0, 1).toUpperCase());
+            }
+        } else {
+            ivUserAvatar.setVisibility(View.GONE);
+            tvAvatarPlaceholder.setVisibility(View.VISIBLE);
+            tvAvatarPlaceholder.setText(nickname.substring(0, 1).toUpperCase());
+        }
+    }
+
+    private void showEditNicknameDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle("Ismingizni kiriting");
+
+        final EditText input = new EditText(requireContext());
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        input.setText(UserProfileManager.getNickname(requireContext()));
+        builder.setView(input);
+
+        builder.setPositiveButton("Saqlash", (dialog, which) -> {
+            String newName = input.getText().toString().trim();
+            if (!newName.isEmpty()) {
+                UserProfileManager.setNickname(requireContext(), newName);
+                updateProfileUI();
+                Toast.makeText(getContext(), "Ismingiz saqlandi!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        builder.setNegativeButton("Bekor qilish", (dialog, which) -> dialog.cancel());
+        builder.show();
     }
 
     private void loadHistoryData() {
