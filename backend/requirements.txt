@@ -1,6 +1,20 @@
+# Production Backend Dependencies
 fastapi==0.104.1
-uvicorn==0.24.0
+uvicorn[standard]==0.24.0
 sqlalchemy==2.0.23
 psycopg2-binary==2.9.9
-pydantic==2.5.2
+alembic==1.12.1
+
+# Security & Authentication
+passlib[bcrypt]==1.7.4
+python-jose[cryptography]==3.3.0
 python-multipart==0.0.6
+bcrypt==4.1.1
+
+# Validation & Settings
+pydantic==2.5.2
+pydantic-settings==2.1.0
+
+# Rate Limiting & Utilities
+slowapi==0.1.9
+python-dotenv==1.0.0
