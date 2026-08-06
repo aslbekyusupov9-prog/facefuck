@@ -3,7 +3,6 @@ package com.aifacerating.app.fragments;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,6 +26,7 @@ import androidx.fragment.app.Fragment;
 
 import com.aifacerating.app.R;
 import com.aifacerating.app.utils.ImageHolder;
+import com.aifacerating.app.utils.ImageUtils;
 import com.aifacerating.app.utils.UserProfileManager;
 import com.google.common.util.concurrent.ListenableFuture;
 
@@ -120,7 +120,8 @@ public class CameraFragment extends Fragment {
                 @Override
                 public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
                     try {
-                        Bitmap fullBitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                        // EXIF Rotation Fix: Correct 90/180/270 degree camera rotation BEFORE cropping
+                        Bitmap fullBitmap = ImageUtils.getCorrectlyOrientedBitmap(requireContext(), Uri.fromFile(photoFile));
                         if (fullBitmap != null) {
                             // Respect Mirror Mode Setting if front camera is used
                             if (UserProfileManager.isMirrorMode(requireContext())) {
@@ -140,14 +141,14 @@ public class CameraFragment extends Fragment {
                             try (FileOutputStream out = new FileOutputStream(photoFile)) {
                                 croppedBitmap.compress(Bitmap.CompressFormat.JPEG, 92, out);
                             }
+
+                            // Pass corrected bitmap to ImageHolder
+                            ImageHolder.getInstance().setImage(croppedBitmap, Uri.fromFile(photoFile));
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
 
-                    Uri savedUri = Uri.fromFile(photoFile);
-                    ImageHolder.getInstance().setImage(null, savedUri);
-                    
                     // Navigate to ResultFragment
                     requireActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container, ResultFragment.newInstance(selectedGender))
