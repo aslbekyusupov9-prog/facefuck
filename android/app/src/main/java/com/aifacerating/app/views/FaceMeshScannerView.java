@@ -74,6 +74,12 @@ public class FaceMeshScannerView extends View {
     }
 
     @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        removeCallbacks(null);
+    }
+
+    @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
@@ -113,7 +119,9 @@ public class FaceMeshScannerView extends View {
         glow.setColor(Color.parseColor("#33E63946"));
         canvas.drawRect(0, scanLineY - 40, w, scanLineY, glow);
 
-        // Keep redrawing for animation
-        postInvalidateDelayed(16); // ~60 FPS
+        // Keep redrawing for animation while attached
+        if (isAttachedToWindow()) {
+            postInvalidateDelayed(16); // ~60 FPS
+        }
     }
 }
