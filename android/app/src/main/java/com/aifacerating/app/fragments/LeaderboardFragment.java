@@ -23,17 +23,22 @@ public class LeaderboardFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_leaderboard, container, false);
         layoutList = view.findViewById(R.id.layout_leaderboard_list);
 
-        loadMockData();
+        loadMockData(view);
+        requestLocationPermission();
 
         return view;
     }
 
-    private void loadMockData() {
+    private void requestLocationPermission() {
+        if (androidx.core.content.ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
+        }
+    }
+
+    private void loadMockData(View view) {
         String[] names = {"Aziza", "Kamron", "Shaxzoda", "Dilmurod", "Zuhra", "Bekzod", "Sardor", "Lola"};
         int[] scores = {98, 95, 92, 89, 87, 81, 78, 75};
 
-        View view = requireView();
-        
         // Setup Podium dynamically
         if(names.length >= 3) {
             ((TextView) view.findViewById(R.id.tv_podium_name_1)).setText(names[0]);
