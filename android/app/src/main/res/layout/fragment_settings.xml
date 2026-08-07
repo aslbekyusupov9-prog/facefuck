@@ -21,7 +21,7 @@
         android:id="@+id/tv_settings_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sozlamalar"
+        android:text="@string/settings_title"
         android:textColor="@color/white"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -47,7 +47,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="📷 Kamera &amp; Tahlil"
+                android:text="@string/settings_section_camera"
                 android:textColor="@color/colorAccent"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -68,7 +68,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Yuzni Avto-Qirqish (Auto-Crop)"
+                        android:text="@string/settings_auto_crop"
                         android:textColor="@color/white"
                         android:textSize="15sp"
                         android:layout_centerVertical="true"/>
@@ -85,7 +85,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Frontal Oyna Efekti (Mirror)"
+                        android:text="@string/settings_mirror"
                         android:textColor="@color/white"
                         android:textSize="15sp"
                         android:layout_centerVertical="true"/>
@@ -101,7 +101,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="🔒 Maxfiylik &amp; Tarix"
+                android:text="@string/settings_section_privacy"
                 android:textColor="@color/colorPrimary"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -122,7 +122,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Tahlillarni Avto Saqlash"
+                        android:text="@string/settings_auto_save"
                         android:textColor="@color/white"
                         android:textSize="15sp"
                         android:layout_centerVertical="true"/>
@@ -137,7 +137,7 @@
                     android:id="@+id/btn_clear_history"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:text="Tarixni Tozalash"
+                    android:text="@string/settings_clear_history"
                     android:textColor="#FF5252"
                     android:textSize="14sp"
                     android:background="@drawable/bg_liquid_glass_accent"/>
@@ -147,7 +147,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="🌐 Interfeys &amp; Til"
+                android:text="@string/settings_section_interface"
                 android:textColor="@color/colorAccent"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -167,7 +167,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Ilova Tili"
+                        android:text="@string/settings_language"
                         android:textColor="@color/white"
                         android:textSize="15sp"
                         android:layout_centerVertical="true"/>
@@ -187,7 +187,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="🔔 Bildirishnomalar"
+                android:text="@string/settings_section_notifications"
                 android:textColor="@color/colorPrimary"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -207,7 +207,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Haftalik Tahlil Eslatmasi"
+                        android:text="@string/settings_reminder"
                         android:textColor="@color/white"
                         android:textSize="15sp"
                         android:layout_centerVertical="true"/>

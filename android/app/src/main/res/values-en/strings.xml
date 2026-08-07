@@ -18,10 +18,14 @@
     <string name="btn_retry_analysis">Analyze Another Photo</string>
 
     <string name="settings_title">Settings</string>
+    <string name="settings_section_camera">📷 Camera &amp; Analysis</string>
+    <string name="settings_section_privacy">🔒 Privacy &amp; History</string>
+    <string name="settings_section_interface">🌐 Interface &amp; Language</string>
+    <string name="settings_section_notifications">🔔 Notifications</string>
     <string name="settings_language">App Language</string>
     <string name="settings_auto_crop">Auto Face Crop</string>
     <string name="settings_mirror">Camera Mirror Mode</string>
-    <string name="settings_auto_save">Auto-save to History</string>
+    <string name="settings_auto_save">Auto-save Analyses</string>
     <string name="settings_reminder">Weekly Reminder</string>
     <string name="settings_clear_history">Clear History</string>
 

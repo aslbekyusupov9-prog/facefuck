@@ -18,10 +18,14 @@
     <string name="btn_retry_analysis">Анализировать другое фото</string>
 
     <string name="settings_title">Настройки</string>
+    <string name="settings_section_camera">📷 Камера и Анализ</string>
+    <string name="settings_section_privacy">🔒 Конфиденциальность и История</string>
+    <string name="settings_section_interface">🌐 Интерфейс и Язык</string>
+    <string name="settings_section_notifications">🔔 Уведомления</string>
     <string name="settings_language">Язык приложения</string>
     <string name="settings_auto_crop">Авто-кадрирование лица</string>
     <string name="settings_mirror">Зеркальный режим камеры</string>
-    <string name="settings_auto_save">Авто-сохранение в историю</string>
+    <string name="settings_auto_save">Авто-сохранение анализов</string>
     <string name="settings_reminder">Еженедельное напоминание</string>
     <string name="settings_clear_history">Очистить историю</string>
 

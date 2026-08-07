@@ -20,11 +20,15 @@
     <string name="btn_retry_analysis">Boshqa rasm tahlil qilish</string>
 
     <string name="settings_title">Sozlamalar</string>
+    <string name="settings_section_camera">📷 Kamera &amp; Tahlil</string>
+    <string name="settings_section_privacy">🔒 Maxfiylik &amp; Tarix</string>
+    <string name="settings_section_interface">🌐 Interfeys &amp; Til</string>
+    <string name="settings_section_notifications">🔔 Bildirishnomalar</string>
     <string name="settings_language">Ilova tili</string>
-    <string name="settings_auto_crop">Avto-yuz qirqish (Auto-crop)</string>
-    <string name="settings_mirror">Kamera oyna rejimi (Mirror mode)</string>
-    <string name="settings_auto_save">Tarixga avto-saqlash</string>
-    <string name="settings_reminder">Haftalik eslatma</string>
+    <string name="settings_auto_crop">Yuzni Avto-Qirqish (Auto-Crop)</string>
+    <string name="settings_mirror">Frontal Oyna Efekti (Mirror)</string>
+    <string name="settings_auto_save">Tahlillarni Avto Saqlash</string>
+    <string name="settings_reminder">Haftalik Tahlil Eslatmasi</string>
     <string name="settings_clear_history">Tarixni tozalash</string>
 
     <string name="language_dialog_title">Tilni tanlang</string>
