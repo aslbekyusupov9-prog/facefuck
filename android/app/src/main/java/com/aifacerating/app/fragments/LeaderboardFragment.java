@@ -3,12 +3,14 @@ package com.aifacerating.app.fragments;
 import android.app.AlertDialog;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,6 +32,7 @@ import retrofit2.Response;
 
 public class LeaderboardFragment extends Fragment {
 
+    private static final String TAG = "Leaderboard";
     private LinearLayout layoutList;
 
     @Nullable
@@ -48,14 +51,20 @@ public class LeaderboardFragment extends Fragment {
             @Override
             public void onResponse(@NonNull Call<ApiService.LeaderboardResponseDto> call, @NonNull Response<ApiService.LeaderboardResponseDto> response) {
                 if (response.isSuccessful() && response.body() != null && response.body().leaderboard != null && !response.body().leaderboard.isEmpty()) {
+                    Log.d(TAG, "Live backend leaderboard fetched successfully: " + response.body().leaderboard.size() + " items");
                     displayLeaderboardData(view, response.body().leaderboard);
                 } else {
+                    Log.w(TAG, "Backend response unsuccessful or empty, code: " + response.code());
                     loadFallbackLeaderboard(view);
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<ApiService.LeaderboardResponseDto> call, @NonNull Throwable t) {
+                Log.e(TAG, "Backend fetch failed", t);
+                if (getContext() != null) {
+                    Toast.makeText(getContext(), "Reyting tarmoq xatosi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
                 loadFallbackLeaderboard(view);
             }
         });
