@@ -1,0 +1,6 @@
+{
+  "versionCode": 3,
+  "versionName": "1.2.0",
+  "apkUrl": "https://raw.githubusercontent.com/aslbekyusupov9-prog/facefuck/main/android/app/build/outputs/apk/debug/app-debug.apk",
+  "changelog": "1. To'g'ridan-to'g'ri In-App Auto Update tizimi qo'shildi.\n2. Sozlamalar bo'limi 100% 3 ta tilga o'tkazildi.\n3. Eski Capacitor JS fayllari tozalanib, Native Java tezligi oshirildi."
+}

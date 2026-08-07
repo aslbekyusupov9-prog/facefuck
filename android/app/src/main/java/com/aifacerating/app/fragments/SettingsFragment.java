@@ -18,6 +18,7 @@ import androidx.core.os.LocaleListCompat;
 import androidx.fragment.app.Fragment;
 
 import com.aifacerating.app.R;
+import com.aifacerating.app.utils.UpdateManager;
 import com.aifacerating.app.utils.UserProfileManager;
 
 public class SettingsFragment extends Fragment {
@@ -28,6 +29,7 @@ public class SettingsFragment extends Fragment {
     private SwitchCompat switchReminder;
     private TextView tvLanguage;
     private Button btnClearHistory;
+    private Button btnCheckUpdate;
     private ImageView btnBack;
 
     @Nullable
@@ -42,6 +44,7 @@ public class SettingsFragment extends Fragment {
         switchReminder = view.findViewById(R.id.switch_reminder);
         tvLanguage = view.findViewById(R.id.tv_current_language);
         btnClearHistory = view.findViewById(R.id.btn_clear_history);
+        btnCheckUpdate = view.findViewById(R.id.btn_check_update);
 
         btnBack.setOnClickListener(v -> {
             requireActivity().getSupportFragmentManager().beginTransaction()
@@ -69,6 +72,13 @@ public class SettingsFragment extends Fragment {
                 .setNegativeButton(R.string.cancel, null)
                 .show();
         });
+
+        if (btnCheckUpdate != null) {
+            btnCheckUpdate.setOnClickListener(v -> {
+                Toast.makeText(requireContext(), "Yangilanishlar tekshirilmoqda...", Toast.LENGTH_SHORT).show();
+                UpdateManager.checkForUpdates(requireActivity(), true);
+            });
+        }
 
         return view;
     }

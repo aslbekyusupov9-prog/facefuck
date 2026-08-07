@@ -28,6 +28,7 @@
     <string name="settings_auto_save">Авто-сохранение анализов</string>
     <string name="settings_reminder">Еженедельное напоминание</string>
     <string name="settings_clear_history">Очистить историю</string>
+    <string name="settings_check_update">🚀 Проверить обновления</string>
 
     <string name="language_dialog_title">Выберите язык</string>
     <string name="language_uz">🇺🇿 O\'zbekcha</string>

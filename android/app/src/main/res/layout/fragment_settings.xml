@@ -163,7 +163,8 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -181,6 +182,15 @@
                         android:textStyle="bold"
                         android:layout_alignParentEnd="true"/>
                 </RelativeLayout>
+
+                <Button
+                    android:id="@+id/btn_check_update"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="@string/settings_check_update"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="14sp"
+                    android:background="@drawable/bg_liquid_glass"/>
             </LinearLayout>
 
             <!-- Section 4: Notifications -->

@@ -30,6 +30,7 @@
     <string name="settings_auto_save">Tahlillarni Avto Saqlash</string>
     <string name="settings_reminder">Haftalik Tahlil Eslatmasi</string>
     <string name="settings_clear_history">Tarixni tozalash</string>
+    <string name="settings_check_update">🚀 Yangilanishlarni tekshirish</string>
 
     <string name="language_dialog_title">Tilni tanlang</string>
     <string name="language_uz">🇺🇿 O\'zbekcha</string>

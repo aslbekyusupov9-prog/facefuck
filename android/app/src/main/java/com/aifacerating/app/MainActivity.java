@@ -1,11 +1,10 @@
 package com.aifacerating.app;
 
 import android.os.Bundle;
-import android.view.MenuItem;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.aifacerating.app.utils.UpdateManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,5 +43,8 @@ public class MainActivity extends AppCompatActivity {
             }
             return false;
         });
+
+        // Trigger In-App Direct Auto-Update check asynchronously
+        UpdateManager.checkForUpdates(this, false);
     }
 }
