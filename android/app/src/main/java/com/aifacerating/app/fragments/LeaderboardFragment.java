@@ -62,16 +62,19 @@ public class LeaderboardFragment extends Fragment {
     }
 
     private void displayLeaderboardData(View view, List<ApiService.LeaderboardItemDto> list) {
-        if (!isAdded() || list == null) return;
+        if (!isAdded() || list == null || list.isEmpty()) {
+            loadFallbackLeaderboard(view);
+            return;
+        }
         layoutList.removeAllViews();
 
-        if (list.size() >= 3) {
-            setupPodiumItem(view, R.id.tv_podium_name_1, R.id.tv_podium_score_1, list.get(0));
-            setupPodiumItem(view, R.id.tv_podium_name_2, R.id.tv_podium_score_2, list.get(1));
-            setupPodiumItem(view, R.id.tv_podium_name_3, R.id.tv_podium_score_3, list.get(2));
-        }
+        // Safely set Podium Items
+        if (list.size() >= 1) setupPodiumItem(view, R.id.tv_podium_name_1, R.id.tv_podium_score_1, list.get(0));
+        if (list.size() >= 2) setupPodiumItem(view, R.id.tv_podium_name_2, R.id.tv_podium_score_2, list.get(1));
+        if (list.size() >= 3) setupPodiumItem(view, R.id.tv_podium_name_3, R.id.tv_podium_score_3, list.get(2));
 
-        for (int i = 3; i < list.size(); i++) {
+        int startIndex = Math.min(3, list.size());
+        for (int i = startIndex; i < list.size(); i++) {
             addLeaderboardItem(list.get(i));
         }
     }
