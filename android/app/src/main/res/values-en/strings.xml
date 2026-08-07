@@ -2,18 +2,16 @@
 <resources>
     <string name="app_name">AI Face Rating</string>
     <string name="title_activity_main">AI Face Rating</string>
-    <string name="package_name">com.aifacerating.app</string>
-    <string name="custom_url_scheme">com.aifacerating.app</string>
 
     <string name="nav_scan">Scan</string>
-    <string name="nav_rating">Rating</string>
-    <string name="nav_tips">Tips</string>
+    <string name="nav_rating">Leaderboard</string>
+    <string name="nav_tips">AI Tips</string>
     <string name="nav_profile">Profile</string>
 
     <string name="scan_title">Scan Your Face</string>
     <string name="scan_subtitle">AI evaluates facial symmetry and golden ratio</string>
-    <string name="btn_take_photo">Take Photo with Camera</string>
-    <string name="btn_select_gallery">Choose from Gallery</string>
+    <string name="btn_take_photo">Take Camera Photo</string>
+    <string name="btn_select_gallery">Select from Gallery</string>
 
     <string name="result_ready">Result Ready!</string>
     <string name="btn_share_story">📲 Share Result to Story</string>
@@ -22,8 +20,19 @@
     <string name="settings_title">Settings</string>
     <string name="settings_language">App Language</string>
     <string name="settings_auto_crop">Auto Face Crop</string>
-    <string name="settings_mirror">Front Camera Mirror Mode</string>
+    <string name="settings_mirror">Camera Mirror Mode</string>
     <string name="settings_auto_save">Auto-save to History</string>
     <string name="settings_reminder">Weekly Reminder</string>
     <string name="settings_clear_history">Clear History</string>
+
+    <string name="language_dialog_title">Select Language</string>
+    <string name="language_uz">🇺🇿 O\'zbekcha</string>
+    <string name="language_en">🇬🇧 English</string>
+    <string name="language_ru">🇷🇺 Русский</string>
+    <string name="language_changed">Language changed to: %1$s</string>
+    <string name="history_cleared">History cleared!</string>
+    <string name="clear_history_title">Clear History</string>
+    <string name="clear_history_message">Are you sure you want to delete all analysis history?</string>
+    <string name="confirm_delete">Yes, Delete</string>
+    <string name="cancel">Cancel</string>
 </resources>

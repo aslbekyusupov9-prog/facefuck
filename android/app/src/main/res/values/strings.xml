@@ -26,4 +26,15 @@
     <string name="settings_auto_save">Tarixga avto-saqlash</string>
     <string name="settings_reminder">Haftalik eslatma</string>
     <string name="settings_clear_history">Tarixni tozalash</string>
+
+    <string name="language_dialog_title">Tilni tanlang</string>
+    <string name="language_uz">🇺🇿 O\'zbekcha</string>
+    <string name="language_en">🇬🇧 English</string>
+    <string name="language_ru">🇷🇺 Русский</string>
+    <string name="language_changed">Til o\'zgartirildi: %1$s</string>
+    <string name="history_cleared">Tarix tozalandi!</string>
+    <string name="clear_history_title">Tarixni tozalash</string>
+    <string name="clear_history_message">Rostdan ham barcha tahlillar tarixini o\'chirmoqchimisiz?</string>
+    <string name="confirm_delete">Ha, O\'chirish</string>
+    <string name="cancel">Bekor qilish</string>
 </resources>

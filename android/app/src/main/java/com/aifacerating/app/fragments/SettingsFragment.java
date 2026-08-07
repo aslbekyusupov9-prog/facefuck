@@ -60,13 +60,13 @@ public class SettingsFragment extends Fragment {
 
         btnClearHistory.setOnClickListener(v -> {
             new AlertDialog.Builder(requireContext())
-                .setTitle("Tarixni tozalash")
-                .setMessage("Rostdan ham barcha tahlillar tarixini o'chirmoqchimisiz?")
-                .setPositiveButton("Ha, O'chirish", (dialog, which) -> {
+                .setTitle(R.string.clear_history_title)
+                .setMessage(R.string.clear_history_message)
+                .setPositiveButton(R.string.confirm_delete, (dialog, which) -> {
                     UserProfileManager.clearHistory(requireContext());
-                    Toast.makeText(requireContext(), "Tarix tozalandi!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), R.string.history_cleared, Toast.LENGTH_SHORT).show();
                 })
-                .setNegativeButton("Bekor qilish", null)
+                .setNegativeButton(R.string.cancel, null)
                 .show();
         });
 
@@ -84,32 +84,41 @@ public class SettingsFragment extends Fragment {
     }
 
     private void showLanguageDialog() {
-        String[] languages = {"🇺🇿 O'zbekcha", "🇬🇧 English", "🇷🇺 Русский"};
+        String[] languages = {
+            getString(R.string.language_uz),
+            getString(R.string.language_en),
+            getString(R.string.language_ru)
+        };
         String[] codes = {"uz", "en", "ru"};
 
         new AlertDialog.Builder(requireContext())
-            .setTitle("Tilni tanlang")
+            .setTitle(R.string.language_dialog_title)
             .setItems(languages, (dialog, which) -> {
                 String chosenCode = codes[which];
                 UserProfileManager.setLanguage(requireContext(), chosenCode);
                 updateLanguageDisplay(chosenCode);
 
-                // Apply App Language Locale dynamically
+                // Apply App Language Locale dynamically via AppCompatDelegate
                 LocaleListCompat appLocales = LocaleListCompat.forLanguageTags(chosenCode);
                 AppCompatDelegate.setApplicationLocales(appLocales);
 
-                Toast.makeText(requireContext(), "Til o'zgartirildi: " + languages[which], Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), getString(R.string.language_changed, languages[which]), Toast.LENGTH_SHORT).show();
+
+                // Recreate Activity so all UI components re-inflate immediately with newly selected language
+                if (getActivity() != null) {
+                    getActivity().recreate();
+                }
             })
             .show();
     }
 
     private void updateLanguageDisplay(String code) {
         if ("en".equals(code)) {
-            tvLanguage.setText("🇬🇧 English");
+            tvLanguage.setText(R.string.language_en);
         } else if ("ru".equals(code)) {
-            tvLanguage.setText("🇷🇺 Русский");
+            tvLanguage.setText(R.string.language_ru);
         } else {
-            tvLanguage.setText("🇺🇿 O'zbekcha");
+            tvLanguage.setText(R.string.language_uz);
         }
     }
 }
