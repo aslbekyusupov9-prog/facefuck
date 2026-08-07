@@ -142,6 +142,11 @@ public class ResultFragment extends Fragment {
                         requireActivity().getSupportFragmentManager().beginTransaction()
                             .replace(R.id.fragment_container, new UploadFragment())
                             .commit();
+                    } else if (faces.size() > 1) {
+                        Toast.makeText(getContext(), "⚠️ Rasmda bir nechta yuz aniqlandi! Iltimos, faqat 1 kishi ko'ringan rasm yuklang.", Toast.LENGTH_LONG).show();
+                        requireActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, new UploadFragment())
+                            .commit();
                     } else {
                         Face primaryFace = faces.get(0);
 
