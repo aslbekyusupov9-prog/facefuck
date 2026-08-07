@@ -1,6 +1,6 @@
 {
-  "versionCode": 3,
-  "versionName": "1.2.0",
+  "versionCode": 4,
+  "versionName": "1.3.0",
   "apkUrl": "https://raw.githubusercontent.com/aslbekyusupov9-prog/facefuck/main/android/app/build/outputs/apk/debug/app-debug.apk",
-  "changelog": "1. To'g'ridan-to'g'ri In-App Auto Update tizimi qo'shildi.\n2. Sozlamalar bo'limi 100% 3 ta tilga o'tkazildi.\n3. Eski Capacitor JS fayllari tozalanib, Native Java tezligi oshirildi."
+  "changelog": "1. Reyting bo'limi to'liq yangilandi: Aktiv foydalanuvchi doim 1-o'rin Shohsupaga (👑 TOP 1 Champion) o'rnatildi.\n2. Barcha eski demo ismlar (Aziza va boshqalar) olib tashlandi."
 }
